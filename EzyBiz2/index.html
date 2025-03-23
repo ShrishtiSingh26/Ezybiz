@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EzyBiz </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="loader">
+      <div class="loader-circle"></div>
+      <div class="loader-text">EzyBiz</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header-container">
+        <a href="#" class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          <span>EzyBiz</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="#features" class="nav-link"><i class="fas fa-star"></i> Features</a></li>
+          <li><a href="#how-it-works" class="nav-link"><i class="fas fa-cogs"></i> How It Works</a></li>
+          <li><a href="#testimonials" class="nav-link"><i class="fas fa-comment-dots"></i> Testimonials</a></li>
+          <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        <div class="auth-buttons">
+          <button class="btn btn-outline" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <button class="btn btn-primary" id="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+      <a href="#" class="logo">
+        <i class="fas fa-shopping-bag"></i>
+        <span>EzyBizt AI</span>
+      </a>
+      <button class="mobile-menu-close" id="mobile-menu-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="#" class="mobile-nav-link active"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#features" class="mobile-nav-link"><i class="fas fa-star"></i> Features</a></li>
+      <li><a href="#how-it-works" class="mobile-nav-link"><i class="fas fa-cogs"></i> How It Works</a></li>
+      <li><a href="#testimonials" class="mobile-nav-link"><i class="fas fa-comment-dots"></i> Testimonials</a></li>
+      <li><a href="#contact" class="mobile-nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+    <div class="mobile-auth-buttons">
+      <button class="btn btn-outline" id="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button class="btn btn-primary" id="mobile-signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-sign-in-alt"></i> Login to Your Account</h3>
+        <button class="modal-close" id="login-modal-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="social-login">
+          <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
+          <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
+        </div>
+        <div class="divider">
+          <span>or login with email</span>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="login-email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password"><i class="fas fa-lock"></i> Password</label>
+            <div class="password-input">
+              <input type="password" id="login-password" placeholder="Enter your password" required>
+              <button type="button" class="password-toggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-checkbox">
+              <input type="checkbox" id="remember-me">
+              <label for="remember-me">Remember me</label>
+            </div>
+            <a href="#" class="forgot-password">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-sign-in-alt"></i> Login</button>
+        </form>
+        <div class="modal-footer">
+          <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal" id="signup-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-plus"></i> Create Your Account</h3>
+        <button class="modal-close" id="signup-modal-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="social-login">
+          <button class="social-btn google"><i class="fab fa-google"></i> Google</button>
+          <button class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
+        </div>
+        <div class="divider">
+          <span>or sign up with email</span>
+        </div>
+        <form id="signup-form">
+          <div class="form-group">
+            <label for="signup-name"><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" id="signup-name" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="signup-email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-password"><i class="fas fa-lock"></i> Password</label>
+            <div class="password-input">
+              <input type="password" id="signup-password" placeholder="Create a password" required>
+              <button type="button" class="password-toggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar">
+                <div class="strength-progress" id="strength-progress"></div>
+              </div>
+              <div class="strength-text" id="strength-text">Password strength</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="business-type"><i class="fas fa-briefcase"></i> Business Type</label>
+            <select id="business-type" required>
+              <option value="" disabled selected>Select your business type</option>
+              <option value="retail">Retail Store</option>
+              <option value="restaurant">Restaurant</option>
+              <option value="service">Service Business</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group form-checkbox">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-user-plus"></i> Create Account</button>
+        </form>
+        <div class="modal-footer">
+          <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="badge">
+            <i class="fas fa-bolt"></i> AI-Powered Platform
+          </div>
+          <h1>Transform Your Business with AI-Powered Shopping</h1>
+          <p>EzyBiz AI helps businesses sync offline-to-online sales, optimize strategies, and gain valuable insights with our cutting-edge AI technology.</p>
+          <div class="hero-buttons">
+            <button class="btn btn-light" id="get-started-btn"><i class="fas fa-rocket"></i> Get Started</button>
+            <button class="btn btn-transparent" id="watch-demo-btn">
+              <i class="fas fa-play-circle"></i> Watch Demo
+            </button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-number">10,000+</div>
+              <div class="hero-stat-label">Businesses</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-number">99%</div>
+              <div class="hero-stat-label">Satisfaction</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-number">30+</div>
+              <div class="hero-stat-label">Countries</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image-container">
+          <div class="ezybiz-character-container">
+            <img src="a.jpg" alt="ShopSmart AI Dashboard" class="ezybiz-character">
+            <div class="security-badge">
+              <div class="security-badge-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="security-badge-text">
+                <span>Secure & Reliable</span>
+                <small>99.9% Uptime</small>
+              </div>
+            </div>
+          </div>
+          <div class="floating-elements">
+            <div class="floating-element" style="top: 20%; left: 10%;">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="floating-element" style="top: 70%; left: 15%;">
+              <i class="fas fa-tags"></i>
+            </div>
+            <div class="floating-element" style="top: 30%; right: 15%;">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="floating-element" style="top: 60%; right: 10%;">
+              <i class="fas fa-robot"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-wave">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#ffffff" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </section>
+
+  <!-- Video Modal -->
+  <div class="modal" id="video-modal">
+    <div class="modal-content video-modal-content">
+      <button class="modal-close" id="video-modal-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="video-container">
+        <div class="video-placeholder">
+          <i class="fas fa-play-circle"></i>
+          <p>EzyBiz AI Demo Video</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-subtitle">What We Offer</span>
+        <h2>Powerful Features for Your Business</h2>
+        <p>EzyBiz AI combines cutting-edge technology with easy-to-use tools to help you manage and grow your business.</p>
+      </div>
+      <div class="features-grid">
+        <!-- Feature Card 1 -->
+        <div class="feature-card" data-feature="ai-sync">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+            <i class="fas fa-sync-alt"></i>
+          </div>
+          <h3>AI Sync</h3>
+          <p>Seamlessly synchronize your offline and online sales data with our intelligent AI-powered system.</p>
+          <a href="features/ai-sync.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          <div class="feature-sticker">
+            <span>New</span>
+          </div>
+        </div>
+        
+        <!-- Feature Card 2 -->
+        <div class="feature-card" data-feature="sales-optimization">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Sales Optimization</h3>
+          <p>Optimize your sales strategies with AI-driven insights and recommendations for maximum revenue.</p>
+          <a href="features/sales-optimization.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <!-- Feature Card 3 -->
+        <div class="feature-card" data-feature="business-insights">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3>Business Insights</h3>
+          <p>Gain valuable insights into your business performance with comprehensive analytics and reports.</p>
+          <a href="features/business-insights.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+          <div class="feature-sticker">
+            <span>Hot</span>
+          </div>
+        </div>
+        
+        <!-- Feature Card 4 -->
+        <div class="feature-card" data-feature="push-notifications">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Push Notifications</h3>
+          <p>Stay updated with real-time alerts about sales, inventory, and customer activity.</p>
+          <a href="features/push-notifications.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <!-- Feature Card 5 -->
+        <div class="feature-card" data-feature="inventory-management">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+            <i class="fas fa-boxes"></i>
+          </div>
+          <h3>Inventory Management</h3>
+          <p>Efficiently manage your inventory with automated tracking, alerts, and optimization suggestions.</p>
+          <a href="features/inventory-management.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <!-- Feature Card 6 -->
+        <div class="feature-card" data-feature="customer-engagement">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Customer Engagement</h3>
+          <p>Enhance customer relationships with personalized experiences and targeted marketing campaigns.</p>
+          <a href="features/customer-engagement.html" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-subtitle">Simple Process</span>
+        <h2>How EzyBiz AI Works</h2>
+        <p>Transform your business with our easy-to-implement AI solution</p>
+      </div>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3><i class="fas fa-plug"></i> Connect Your Systems</h3>
+            <p>Easily integrate EzyBiz AI with your existing POS, e-commerce platform, and inventory management systems.</p>
+            <div class="step-image-container">
+              <img src="https://i.pinimg.com/736x/8f/c2/93/8fc293b3c79c4e8f6823353ee1b128c5.jpg" alt="Connect Systems" class="step-image">
+              <div class="step-image-overlay">
+                <div class="step-image-icon">
+                  <i class="fas fa-plug"></i>
+                </div>
+              </div>
+            </div>
+            <div class="step-badge">
+              <span>Simple Setup</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3><i class="fas fa-sync-alt"></i> Sync Your Data</h3>
+            <p>Our AI automatically synchronizes your offline and online sales data, ensuring everything is up-to-date.</p>
+            <div class="step-image-container">
+              <img src="https://i.pinimg.com/736x/9d/3f/79/9d3f795bd6b3b6fd26d6b8490965b0c9.jpg" alt="Sync Data" class="step-image">
+              <div class="step-image-overlay">
+                <div class="step-image-icon">
+                  <i class="fas fa-sync-alt"></i>
+                </div>
+              </div>
+            </div>
+            <div class="step-badge">
+              <span>AI-Powered</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-line"></div>
+          <div class="step-content">
+            <h3><i class="fas fa-chart-pie"></i> Analyze & Optimize</h3>
+            <p>Our advanced AI analyzes your data to provide actionable insights and optimization recommendations.</p>
+            <div class="step-image-container">
+              <img src="https://i.pinimg.com/736x/d3/73/6f/d3736f72345004b2b7bb1396b2e09242.jpg" alt="Analyze Data" class="step-image">
+              <div class="step-image-overlay">
+                <div class="step-image-icon">
+                  <i class="fas fa-chart-pie"></i>
+                </div>
+              </div>
+            </div>
+            <div class="step-badge">
+              <span>Smart Analytics</span>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3><i class="fas fa-rocket"></i> Grow Your Business</h3>
+            <p>Implement AI-driven recommendations to increase sales, optimize inventory, and enhance customer satisfaction.</p>
+            <div class="step-image-container">
+              <img src="https://i.pinimg.com/736x/69/10/ab/6910ab5d584f6b82f0622c971bcd6344.jpg" alt="Grow Business" class="step-image">
+              <div class="step-image-overlay">
+                <div class="step-image-icon">
+                  <i class="fas fa-rocket"></i>
+                </div>
+              </div>
+            </div>
+            <div class="step-badge">
+              <span>Growth Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shape shape-6"></div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-subtitle">Success Stories</span>
+        <h2>What Our Customers Say</h2>
+        <p>Hear from businesses that have transformed with ShopSmart AI</p>
+      </div>
+      <div class="testimonials-container">
+        <div class="testimonial-slider" id="testimonial-slider">
+          <div class="testimonial-track" id="testimonial-track">
+            <div class="testimonial-slide">
+              <div class="testimonial-card">
+                <div class="testimonial-content">
+                  <div class="testimonial-quote">
+                    <i class="fas fa-quote-left"></i>
+                  </div>
+                  <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <p class="testimonial-text">ShopSmart AI has completely transformed how I manage my retail business. The AI-powered sync between my physical store and online shop has eliminated inventory discrepancies and saved me countless hours!</p>
+                  <div class="testimonial-author">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/h-EgqMcMBdux03O9BLyET3OcbDRCBcDj.jpeg" alt="Testimonial Author" class="author-avatar">
+                    <div class="author-info">
+                      <h4>Rahul Sharma</h4>
+                      <p>Fashion Retailer</p>
+                    </div>
+                    <div class="author-badge">
+                      <i class="fas fa-award"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-slide">
+              <div class="testimonial-card">
+                <div class="testimonial-content">
+                  <div class="testimonial-quote">
+                    <i class="fas fa-quote-left"></i>
+                  </div>
+                  <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <p class="testimonial-text">The business insights provided by ShopSmart AI helped me identify trends I never would have noticed. I've been able to optimize my inventory and increase my profit margins by 15% in just three months!</p>
+                  <div class="testimonial-author">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/f-Sf6ZyasbozFAaqFx59hoo9CHJtOYZX.jpeg" alt="Testimonial Author" class="author-avatar">
+                    <div class="author-info">
+                      <h4>Priya Patel</h4>
+                      <p>Grocery Store Owner</p>
+                    </div>
+                    <div class="author-badge">
+                      <i class="fas fa-certificate"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-slide">
+              <div class="testimonial-card">
+                <div class="testimonial-content">
+                  <div class="testimonial-quote">
+                    <i class="fas fa-quote-left"></i>
+                  </div>
+                  <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <p class="testimonial-text">The push notification feature has been a game-changer for my business. I'm always informed about inventory levels and sales performance, allowing me to make quick decisions even when I'm away from my store.</p>
+                  <div class="testimonial-author">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/g-hKhRlrYyqwUPDINXLg9G0FMjleogoz.jpeg" alt="Testimonial Author" class="author-avatar">
+                    <div class="author-info">
+                      <h4>Lakshmi Devi</h4>
+                      <p>Handicraft Business Owner</p>
+                    </div>
+                    <div class="author-badge">
+                      <i class="fas fa-medal"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-nav">
+            <button id="prev-testimonial" class="nav-btn">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <button id="next-testimonial" class="nav-btn">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="testimonial-dots" id="testimonial-dots">
+            <span class="testimonial-dot active" data-index="0"></span>
+            <span class="testimonial-dot" data-index="1"></span>
+            <span class="testimonial-dot" data-index="2"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shape shape-7"></div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-badge">
+          <i class="fas fa-gift"></i>
+          <span>Free Platform</span>
+        </div>
+        <h2>Ready to Transform Your Business?</h2>
+        <p>Join thousands of businesses that are growing with EzyBiz AI's intelligent shopping platform.</p>
+        <div class="cta-buttons">
+          <button class="btn btn-light pulse-animation" id="cta-btn"><i class="fas fa-rocket"></i> Get Started Now</button>
+          <button class="btn btn-outline-light" id="cta-demo-btn"><i class="fas fa-calendar-alt"></i> Schedule a Demo</button>
+        </div>
+        <div class="cta-features">
+          <div class="cta-feature">
+            <i class="fas fa-check-circle"></i>
+            <span>No credit card required</span>
+          </div>
+          <div class="cta-feature">
+            <i class="fas fa-check-circle"></i>
+            <span>Free platform access</span>
+          </div>
+          <div class="cta-feature">
+            <i class="fas fa-check-circle"></i>
+            <span>Premium support available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cta-wave">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#0f172a" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+    <div class="shape shape-8"></div>
+    <div class="shape shape-9"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3><i class="fas fa-shopping-bag"></i> EzyBiz AI</h3>
+            <p>AI-powered shopping platform for modern businesses.</p>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+              <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+              <li><a href="#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+              <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+              <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Features</h3>
+            <ul class="footer-links">
+              <li><a href="features/ai-sync.html"><i class="fas fa-chevron-right"></i> AI Sync</a></li>
+              <li><a href="features/sales-optimization.html"><i class="fas fa-chevron-right"></i> Sales Optimization</a></li>
+              <li><a href="features/business-insights.html"><i class="fas fa-chevron-right"></i> Business Insights</a></li>
+              <li><a href="features/push-notifications.html"><i class="fas fa-chevron-right"></i> Push Notifications</a></li>
+              <li><a href="features/inventory-management.html"><i class="fas fa-chevron-right"></i> Inventory Management</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <ul class="footer-contact">
+              <li><i class="fas fa-map-marker-alt"></i> 123 Tech Park, Innovation Street</li>
+              <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+              <li><i class="fas fa-envelope"></i> info@EzyBizai.com</li>
+            </ul>
+            <form class="footer-form">
+              <input type="email" placeholder="Your email" required>
+              <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i></button>
+            </form>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; <span id="current-year">2023</span> EzyBiz AI. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="scroll-top" id="scroll-top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+
+  <!-- Chatbot Widget -->
+  <div class="chatbot-widget">
+    <div class="chatbot-button" id="chatbot-button">
+      <i class="fas fa-comment-dots"></i>
+      <span class="chatbot-notification">1</span>
+    </div>
+    <div class="chatbot-container" id="chatbot-container">
+      <div class="chatbot-header">
+        <div class="chatbot-title">
+          <i class="fas fa-robot"></i>
+          <span>EzyBiz Assistant</span>
+        </div>
+        <div class="chatbot-actions">
+          <button class="chatbot-action" aria-label="Minimize">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button class="chatbot-close" id="chatbot-close" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="message message-bot">
+          <div class="message-avatar">
+            <img src="https://via.placeholder.com/40x40?text=🤖" alt="Bot Avatar">
+          </div>
+          <div class="message-content">
+            Hello! I'm the EzyBiz AI assistant. How can I help you today?
+          </div>
+        </div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" placeholder="Type your message..." id="chatbot-input">
+        <button class="chatbot-send" id="chatbot-send">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <div class="notification-icon">
+      <i class="fas fa-bell"></i>
+    </div>
+    <div class="notification-content">
+      <div class="notification-title">Welcome to EzyBiz</div>
+      <div class="notification-message">Discover how our AI can transform your business today!</div>
+    </div>
+    <div class="notification-actions">
+      <button class="notification-action">Learn More</button>
+      <button class="notification-close" id="notification-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Cookie Consent -->
+  <div class="cookie-consent" id="cookie-consent">
+    <div class="cookie-content">
+      <div class="cookie-icon">
+        <i class="fas fa-cookie-bite"></i>
+      </div>
+      <div class="cookie-text">
+        <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+      </div>
+      <div class="cookie-buttons">
+        <button class="btn btn-sm btn-outline" id="cookie-settings">Settings</button>
+        <button class="btn btn-sm btn-primary" id="cookie-accept">Accept All</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

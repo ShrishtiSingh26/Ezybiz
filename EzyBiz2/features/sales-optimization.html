@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EzyBiz - Sales Optimization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Base Styles and Variables */
+        :root {
+            /* Primary brand colors */
+            --primary-color: #4a6cf7;
+            --primary-light: #6384ff;
+            --primary-dark: #3950c4;
+            
+            /* Secondary colors */
+            --secondary-color: #38b2ac;
+            --secondary-light: #4fd1cc;
+            --secondary-dark: #2c8f8a;
+            
+            /* Neutral colors */
+            --bg-white: #ffffff;
+            --bg-light: #f9fafb;
+            --bg-gray: #f3f4f6;
+            --text-dark: #1e293b;
+            --text-medium: #475569;
+            --text-light: #94a3b8;
+            --border-light: #e2e8f0;
+            
+            /* Chart colors */
+            --chart-color1: #4a6cf7;
+            --chart-color2: #38b2ac;
+            --chart-color3: #f97316;
+            --chart-color4: #8b5cf6;
+            --chart-color5: #f43f5e;
+            --chart-color6: #84cc16;
+            
+            /* Status colors */
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+            
+            /* Layout */
+            --header-height: 64px;
+            --footer-height: 60px;
+            --sidebar-width: 240px;
+            --container-padding: 24px;
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            /* Animation */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            /* Z-index layers */
+            --z-header: 100;
+            --z-dropdown: 200;
+            --z-modal: 300;
+            --z-toast: 400;
+            --z-avatar: 150;
+        }
+
+        /* Dark mode variables */
+        .dark-mode {
+            --bg-white: #1a1a1a;
+            --bg-light: #252525;
+            --bg-gray: #333333;
+            --text-dark: #ffffff;
+            --text-medium: #cccccc;
+            --text-light: #999999;
+            --border-light: #444444;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            transition: background-color var(--transition-normal), color var(--transition-normal);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+        }
+
+        button {
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            background: none;
+            transition: background-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        input, select, textarea {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--border-radius-sm);
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        /* Layout Styles */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: var(--container-padding);
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--bg-white);
+            height: var(--header-height);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-header);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--container-padding);
+            transition: background-color var(--transition-normal);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-menu ul {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-medium);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 1.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-medium);
+            transition: color var(--transition-fast);
+        }
+
+        .notification-bell:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--error-color);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--text-dark);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Page Title Styles */
+        .page-title {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title h1 {
+            font-size: 1.875rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: var(--text-medium);
+            max-width: 600px;
+        }
+
+        .dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--bg-gray);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--border-light);
+        }
+
+        .dark-mode-toggle i {
+            font-size: 18px;
+            color: var(--text-medium);
+        }
+
+        .dark-mode-toggle span {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        /* Dashboard Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Dashboard Widgets */
+        .dashboard-widget {
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            padding: 24px;
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+        }
+
+        .dashboard-widget:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0;
+        }
+
+        .widget-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .widget-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 10px;
+            border-radius: var(--border-radius-sm);
+            font-size: 13px;
+        }
+
+        /* Sales Overview Widget */
+        .sales-overview {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        /* Top Products Widget */
+        .top-products {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Customer Demographics Widget */
+        .customer-demographics {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Sales Tracker Widget */
+        .sales-tracker {
+            grid-column: span 1;
+            grid-row: span 1;
+            position: relative;
+        }
+
+        .sales-target {
+            margin-top: 20px;
+        }
+
+        .target-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--bg-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Sales Comparison Widget */
+        .sales-comparison {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .comparison-periods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .date-range-input {
+            flex: 1;
+        }
+
+        .date-range-input label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-medium);
+            margin-bottom: 5px;
+        }
+
+        .date-range-input input {
+            width: 100%;
+        }
+
+        .compare-btn {
+            margin-top: 23px;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            transition: background-color var(--transition-fast);
+        }
+
+        .compare-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* AI Avatar Section */
+        .ai-section {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .ai-avatar-container {
+            position: relative;
+            margin-bottom: 20px;
+            height: 120px;
+        }
+
+        .ai-avatar {
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            box-shadow: var(--shadow-lg);
+            animation: pulse 3s infinite;
+            z-index: var(--z-avatar);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .ai-message-container {
+            position: relative;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-lg);
+            padding: 20px 30px 20px 150px;
+            box-shadow: var(--shadow-md);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ai-message {
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .ai-interaction {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: var(--border-radius-md);
+            font-size: 15px;
+        }
+
+        .ai-send-btn {
+            padding: 0 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+        }
+
+        .ai-send-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Sales Strategy Section */
+        .sales-strategy-section {
+            margin-top: 30px;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+
+        .strategy-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .strategy-card {
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            padding: 24px;
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .strategy-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--chart-color1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .strategy-card:nth-child(2) .strategy-icon {
+            background-color: var(--chart-color2);
+        }
+
+        .strategy-card:nth-child(3) .strategy-icon {
+            background-color: var(--chart-color3);
+        }
+
+        .strategy-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .strategy-description {
+            color: var(--text-medium);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .strategy-metrics {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+
+        .apply-strategy-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .apply-strategy-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Live Sales Tracker */
+        .live-updates {
+            margin-top: 20px;
+        }
+
+        .live-sales-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+            position: relative;
+        }
+
+        .live-indicator:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: var(--success-color);
+            animation: pulse-live 1.5s infinite;
+        }
+
+        @keyframes pulse-live {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .live-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .live-sales-list {
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .live-sale-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sale-product {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .sale-time {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .sale-amount {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--bg-white);
+            padding: 16px var(--container-padding);
+            border-top: 1px solid var(--border-light);
+            transition: background-color var(--transition-normal);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-link {
+            font-size: 14px;
+            color: var(--text-medium);
+            transition: color var(--transition-fast);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-lg);
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .toast-success {
+            background-color: var(--success-color);
+        }
+
+        .toast-error {
+            background-color: var(--error-color);
+        }
+
+        .toast-info {
+            background-color: var(--info-color);
+        }
+
+        .toast-warning {
+            background-color: var(--warning-color);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+            animation: progress 3s linear;
+        }
+
+        /* Animations */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .sales-overview {
+                grid-column: span 2;
+            }
+
+            .sales-comparison {
+                grid-column: span 2;
+            }
+
+            .ai-section {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .sales-overview, .sales-comparison, .ai-section {
+                grid-column: span 1;
+            }
+
+            .page-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .comparison-periods {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .compare-btn {
+                margin-top: 10px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .ai-message-container {
+                padding: 20px;
+                margin-top: 70px;
+            }
+
+            .ai-avatar {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -50px;
+            }
+
+            .strategy-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header {
+                padding: 0 16px;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .widget-filter {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-text">EzyBiz</span>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="inventory-management.html">Inventory</a></li>
+                    <li><a href="#" class="active">Sales Optimization</a></li>
+                    <li><a href="push-notifications.html">Notifications</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="notification-bell" id="notificationBell">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notification-count" id="notificationCount">3</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Mr. Rakesh</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="page-title">
+                <div>
+                    <h1>Sales Optimization</h1>
+                    <p>Analyze your sales performance and discover strategies to boost your revenue</p>
+                </div>
+                <div class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+            </section>
+
+            <div class="dashboard-grid">
+                <!-- Sales Overview Chart -->
+                <div class="dashboard-widget sales-overview">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Sales Trends</h3>
+                        <div class="widget-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="widget-filter">
+                        <select class="filter-select" id="salesPeriodFilter">
+                            <option value="7days">Last 7 Days</option>
+                            <option value="30days" selected>Last 30 Days</option>
+                            <option value="90days">Last 90 Days</option>
+                            <option value="year">Last Year</option>
+                        </select>
+                        <select class="filter-select" id="salesCategoryFilter">
+                            <option value="all" selected>All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="home">Home & Kitchen</option>
+                            <option value="beauty">Beauty & Personal Care</option>
+                        </select>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top Products Chart -->
+                <div class="dashboard-widget top-products">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Top Products</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color2);">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                    </div>
+                    <div class="widget-filter">
+                        <select class="filter-select" id="topProductsFilter">
+                            <option value="5">Top 5</option>
+                            <option value="10" selected>Top 10</option>
+                            <option value="20">Top 20</option>
+                        </select>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="productsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Customer Demographics Chart -->
+                <div class="dashboard-widget customer-demographics">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Customer Demographics</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color3);">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="widget-filter">
+                        <select class="filter-select" id="demographicsFilter">
+                            <option value="age" selected>Age Groups</option>
+                            <option value="gender">Gender</option>
+                            <option value="location">Location</option>
+                        </select>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="demographicsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sales Tracker Widget -->
+                <div class="dashboard-widget sales-tracker">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Sales Tracker</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color4);">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                    </div>
+                    <div class="live-updates">
+                        <div class="live-sales-header">
+                            <div class="live-indicator"></div>
+                            <div class="live-title">Live Sales Updates</div>
+                        </div>
+                        <div class="live-sales-list" id="liveSalesList">
+                            <!-- Live sales will be dynamically added here -->
+                        </div>
+                    </div>
+                    <div class="sales-target">
+                        <div class="target-label">
+                            <span>Monthly Sales Target</span>
+                            <span id="targetProgress">$0 / $50,000</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="salesProgressBar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Comparison Widget -->
+                <div class="dashboard-widget sales-comparison">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Sales Comparison</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color5);">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                    </div>
+                    <div class="comparison-periods">
+                        <div class="date-range-input">
+                            <label>Period 1</label>
+                            <input type="date" id="period1Start" value="2025-02-01">
+                            <input type="date" id="period1End" value="2025-02-28" style="margin-top: 8px;">
+                        </div>
+                        <div class="date-range-input">
+                            <label>Period 2</label>
+                            <input type="date" id="period2Start" value="2025-03-01">
+                            <input type="date" id="period2End" value="2025-03-23" style="margin-top: 8px;">
+                        </div>
+                        <button class="compare-btn" id="compareBtn">
+                            <i class="fa-solid fa-arrows-left-right-to-line"></i>
+                            Compare
+                        </button>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- AI Assistant Section -->
+                <div class="dashboard-widget ai-section">
+                    <div class="ai-avatar-container">
+                        <div class="ai-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                    </div>
+                    <div class="ai-message-container">
+                        <p class="ai-message" id="aiMessage">Hello Rakesh! Based on your recent sales data, I've noticed your electronics category has seen a 15% growth this month. Would you like some suggestions on how to capitalize on this trend?</p>
+                    </div>
+                    <div class="ai-interaction">
+                        <input type="text" class="ai-input" id="aiInput" placeholder="Ask me about your sales data or for optimization suggestions...">
+                        <button class="ai-send-btn" id="aiSendBtn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Strategies Section -->
+            <section class="sales-strategy-section">
+                <div class="section-header">
+                    <h2 class="section-title">AI-Powered Sales Strategies</h2>
+                    <p class="section-subtitle">Personalized strategies based on your sales data to help you boost revenue and customer engagement</p>
+                </div>
+
+                <div class="strategy-cards">
+                    <!-- Strategy 1 -->
+                    <div class="strategy-card">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <h3 class="strategy-title">Product Bundling</h3>
+                        </div>
+                        <p class="strategy-description">Boost sales by bundling your slow-moving items with popular products. This creates value for customers while increasing average order value.</p>
+                        <div class="strategy-metrics">
+                            <div class="metric">
+                                <div class="metric-value">+24%</div>
+                                <div class="metric-label">Revenue</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">+18%</div>
+                                <div class="metric-label">Units Sold</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">-15%</div>
+                                <div class="metric-label">Dead Stock</div>
+                            </div>
+                        </div>
+                        <button class="apply-strategy-btn" data-strategy="bundling">Apply Strategy</button>
+                    </div>
+
+                    <!-- Strategy 2 -->
+                    <div class="strategy-card">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <i class="fa-solid fa-tag"></i>
+                            </div>
+                            <h3 class="strategy-title">Seasonal Discounts</h3>
+                        </div>
+                        <p class="strategy-description">Create urgency with limited-time seasonal promotions. Our AI has identified optimal discount rates for maximum revenue without sacrificing margins.</p>
+                        <div class="strategy-metrics">
+                            <div class="metric">
+                                <div class="metric-value">+35%</div>
+                                <div class="metric-label">Conversion</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">+42%</div>
+                                <div class="metric-label">Sales Volume</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">+19%</div>
+                                <div class="metric-label">Net Profit</div>
+                            </div>
+                        </div>
+                        <button class="apply-strategy-btn" data-strategy="seasonal">Apply Strategy</button>
+                    </div>
+
+                    <!-- Strategy 3 -->
+                    <div class="strategy-card">
+                        <div class="strategy-header">
+                            <div class="strategy-icon">
+                                <i class="fa-solid fa-medal"></i>
+                            </div>
+                            <h3 class="strategy-title">Loyalty Program</h3>
+                        </div>
+                        <p class="strategy-description">Incentivize repeat business with a tiered loyalty program. Reward your best customers and transform one-time buyers into lifetime advocates.</p>
+                        <div class="strategy-metrics">
+                            <div class="metric">
+                                <div class="metric-value">+65%</div>
+                                <div class="metric-label">Retention</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">+27%</div>
+                                <div class="metric-label">LTV</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">-20%</div>
+                                <div class="metric-label">CAC</div>
+                            </div>
+                        </div>
+                        <button class="apply-strategy-btn" data-strategy="loyalty">Apply Strategy</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-text">
+                    &copy; 2025 EzyBiz. All rights reserved.
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer">
+        <!-- Toasts will be dynamically added here -->
+    </div>
+
+    <script>
+        // DOM Elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            // AI Elements
+            const aiMessage = document.getElementById('aiMessage');
+            const aiInput = document.getElementById('aiInput');
+            const aiSendBtn = document.getElementById('aiSendBtn');
+            // Sales Tracker
+            const salesProgressBar = document.getElementById('salesProgressBar');
+            const targetProgress = document.getElementById('targetProgress');
+            const liveSalesList = document.getElementById('liveSalesList');
+            // Chart Filters
+            const salesPeriodFilter = document.getElementById('salesPeriodFilter');
+            const salesCategoryFilter = document.getElementById('salesCategoryFilter');
+            const topProductsFilter = document.getElementById('topProductsFilter');
+            const demographicsFilter = document.getElementById('demographicsFilter');
+            // Comparison
+            const compareBtn = document.getElementById('compareBtn');
+            // Strategy Buttons
+            const strategyBtns = document.querySelectorAll('.apply-strategy-btn');
+
+            // Theme State
+            let isDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            // Initialize Theme
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.querySelector('i').classList.remove('fa-moon');
+                darkModeToggle.querySelector('i').classList.add('fa-sun');
+                darkModeToggle.querySelector('span').textContent = 'Light Mode';
+            }
+
+            // Toggle Dark Mode
+            darkModeToggle.addEventListener('click', function() {
+                isDarkMode = !isDarkMode;
+                
+                if (isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    darkModeToggle.querySelector('i').classList.remove('fa-moon');
+                    darkModeToggle.querySelector('i').classList.add('fa-sun');
+                    darkModeToggle.querySelector('span').textContent = 'Light Mode';
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    darkModeToggle.querySelector('i').classList.remove('fa-sun');
+                    darkModeToggle.querySelector('i').classList.add('fa-moon');
+                    darkModeToggle.querySelector('span').textContent = 'Dark Mode';
+                }
+                
+                localStorage.setItem('darkMode', isDarkMode);
+                
+                // Update chart themes
+                updateAllCharts();
+            });
+
+            // AI Chat functionality
+            aiSendBtn.addEventListener('click', function() {
+                handleAIChat();
+            });
+            
+            aiInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleAIChat();
+                }
+            });
+
+            // Strategy buttons
+            strategyBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const strategy = btn.dataset.strategy;
+                    applyStrategy(strategy);
+                });
+            });
+
+            // Chart filters
+            salesPeriodFilter.addEventListener('change', function() {
+                updateSalesChart();
+            });
+            
+            salesCategoryFilter.addEventListener('change', function() {
+                updateSalesChart();
+            });
+            
+            topProductsFilter.addEventListener('change', function() {
+                updateProductsChart();
+            });
+            
+            demographicsFilter.addEventListener('change', function() {
+                updateDemographicsChart();
+            });
+            
+            // Comparison button
+            compareBtn.addEventListener('click', function() {
+                updateComparisonChart();
+            });
+
+            // Initialize Charts
+            initializeCharts();
+            
+            // Initialize sales progress
+            initializeSalesProgress();
+            
+            // Start live sales simulation
+            startLiveSalesSimulation();
+        });
+
+        // AI Chat handler
+        function handleAIChat() {
+            const aiInput = document.getElementById('aiInput');
+            const aiMessage = document.getElementById('aiMessage');
+            const query = aiInput.value.trim();
+            
+            if (query === '') return;
+            
+            // Clear input
+            aiInput.value = '';
+            
+            // Show thinking state
+            aiMessage.innerHTML = '<i>Thinking...</i>';
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                const response = getAIResponse(query);
+                aiMessage.innerText = response;
+            }, 1000);
+        }
+
+        // AI Response generator
+        function getAIResponse(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Basic pattern matching for common questions
+            if (lowerQuery.includes('increase sales') || lowerQuery.includes('boost sales')) {
+                return "Based on your current data, I recommend focusing on your electronics category which shows high profit margins. Consider implementing a bundle discount strategy with complementary products to increase average order value by 15-20%.";
+            } else if (lowerQuery.includes('best selling') || lowerQuery.includes('top product')) {
+                return "Your best-selling product this month is the 'Wireless Bluetooth Earbuds' with 320 units sold, generating $25,587 in revenue. It has a conversion rate of 4.8%, which is 32% higher than your store average.";
+            } else if (lowerQuery.includes('customer') && lowerQuery.includes('retention')) {
+                return "Your customer retention rate is currently at 42%, which is slightly below industry average. I recommend implementing a loyalty program that offers tiered rewards. Businesses in your sector have seen retention improvements of 25-40% with such programs.";
+            } else if (lowerQuery.includes('discount') || lowerQuery.includes('promotion')) {
+                return "Your historical data suggests that a 15% discount is your sweet spot for maximizing revenue without hurting margins. Targeted promotions to customers who haven't purchased in 30+ days show a 28% higher ROI than general promotions.";
+            } else if (lowerQuery.includes('inventory') || lowerQuery.includes('stock')) {
+                return "I've identified 5 products that are at risk of stockout in the next 7 days. The most critical is the 'Smart Coffee Maker' with only 3 units left and demand forecasted at 12 units. Would you like me to prepare a restock recommendation?";
+            } else if (lowerQuery.includes('trend') || lowerQuery.includes('forecast')) {
+                return "I've detected a rising trend in home office equipment purchases, with a 34% increase month-over-month. This presents an opportunity to feature these products prominently and consider bundle offers with complementary items like desk organizers.";
+            } else {
+                return "That's an interesting question! Based on your recent sales data, I'd recommend focusing on optimizing your product mix in the electronics category where you have the highest profit margins. Would you like specific recommendations for this category?";
+            }
+        }
+
+        // Apply selected strategy
+        function applyStrategy(strategy) {
+            let title, message, chartToUpdate;
+            
+            switch(strategy) {
+                case 'bundling':
+                    title = 'Product Bundling Strategy Applied';
+                    message = 'Bundle recommendations have been added to your product pages and will appear in cart recommendations.';
+                    chartToUpdate = 'products';
+                    break;
+                case 'seasonal':
+                    title = 'Seasonal Discounts Applied';
+                    message = 'Limited-time discounts will be applied to selected products based on AI recommendations.';
+                    chartToUpdate = 'sales';
+                    break;
+                case 'loyalty':
+                    title = 'Loyalty Program Activated';
+                    message = 'Customer loyalty program has been enabled with tiered rewards based on purchase history.';
+                    chartToUpdate = 'demographics';
+                    break;
+                default:
+                    title = 'Strategy Applied';
+                    message = 'Your selected strategy has been applied successfully.';
+            }
+            
+            // Show toast notification
+            showToast(message, 'success', title);
+            
+            // Update affected chart with simulated improvement
+            simulateStrategyEffect(chartToUpdate);
+        }
+
+        // Initialize all charts
+        function initializeCharts() {
+            initSalesChart();
+            initProductsChart();
+            initDemographicsChart();
+            initComparisonChart();
+        }
+
+        // Update all charts (for theme changes)
+        function updateAllCharts() {
+            updateSalesChart();
+            updateProductsChart();
+            updateDemographicsChart();
+            updateComparisonChart();
+        }
+
+        // Sales Chart
+        let salesChart;
+        
+        function initSalesChart() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            
+            // Chart configuration
+            salesChart = new Chart(ctx, {
+                type: 'line',
+                data: getSalesData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateSalesChart() {
+            if (!salesChart) return;
+            
+            salesChart.data = getSalesData();
+            salesChart.options.scales.y.grid.color = getChartGridColor();
+            salesChart.options.scales.x.grid.color = getChartGridColor();
+            salesChart.options.scales.y.ticks.color = getChartTextColor();
+            salesChart.options.scales.x.ticks.color = getChartTextColor();
+            salesChart.options.plugins.legend.labels.color = getChartTextColor();
+            salesChart.update();
+        }
+        
+        function getSalesData() {
+            // Simulate different data based on filter selections
+            const period = document.getElementById('salesPeriodFilter').value;
+            const category = document.getElementById('salesCategoryFilter').value;
+            
+            // Generate labels based on period
+            let labels = [];
+            let dataPoints1 = [];
+            let dataPoints2 = [];
+            
+            if (period === '7days') {
+                labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                dataPoints1 = [5200, 7800, 6500, 8200, 9100, 11200, 9800];
+                dataPoints2 = [4800, 5600, 5900, 7100, 8000, 9500, 8600];
+            } else if (period === '30days') {
+                labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+                dataPoints1 = [34500, 42800, 38900, 47200, 52300];
+                dataPoints2 = [31200, 35600, 34200, 40100, 45800];
+            } else if (period === '90days') {
+                labels = ['Jan', 'Feb', 'Mar'];
+                dataPoints1 = [158000, 172000, 193000];
+                dataPoints2 = [142000, 155000, 178000];
+            } else if (period === 'year') {
+                labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                dataPoints1 = [158000, 172000, 193000, 185000, 202000, 198000, 205000, 215000, 208000, 225000, 245000, 265000];
+                dataPoints2 = [142000, 155000, 178000, 170000, 185000, 182000, 190000, 199000, 195000, 210000, 228000, 240000];
+            }
+            
+            // Adjust data based on category filter
+            if (category !== 'all') {
+                // Simulate different category performance
+                const factor = category === 'electronics' ? 1.2 : 
+                               category === 'clothing' ? 0.9 : 
+                               category === 'home' ? 1.1 : 0.85;
+                
+                dataPoints1 = dataPoints1.map(value => Math.round(value * factor));
+                dataPoints2 = dataPoints2.map(value => Math.round(value * factor));
+            }
+            
+            return {
+                labels: labels,
+                datasets: [
+                    {
+                        label: '2025',
+                        data: dataPoints1,
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color1'),
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color1') + '30',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: '2024',
+                        data: dataPoints2,
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2') + '30',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            };
+        }
+
+        // Products Chart
+        let productsChart;
+        
+        function initProductsChart() {
+            const ctx = document.getElementById('productsChart').getContext('2d');
+            
+            productsChart = new Chart(ctx, {
+                type: 'bar',
+                data: getProductsData(),
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                display: false,
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateProductsChart() {
+            if (!productsChart) return;
+            
+            productsChart.data = getProductsData();
+            productsChart.options.scales.y.grid.color = getChartGridColor();
+            productsChart.options.scales.x.grid.color = getChartGridColor();
+            productsChart.options.scales.y.ticks.color = getChartTextColor();
+            productsChart.options.scales.x.ticks.color = getChartTextColor();
+            productsChart.update();
+        }
+        
+        function getProductsData() {
+            const limit = document.getElementById('topProductsFilter').value;
+            
+            // Sample product data
+            const products = [
+                { name: 'Wireless Earbuds', sales: 320 },
+                { name: 'Smart Watch', sales: 285 },
+                { name: 'Bluetooth Speaker', sales: 254 },
+                { name: 'Coffee Maker', sales: 230 },
+                { name: 'Yoga Mat', sales: 195 },
+                { name: 'Office Chair', sales: 180 },
+                { name: 'Desk Lamp', sales: 165 },
+                { name: 'External SSD', sales: 142 },
+                { name: 'Wireless Mouse', sales: 135 },
+                { name: 'Air Purifier', sales: 120 },
+                { name: 'USB-C Hub', sales: 115 },
+                { name: 'Protein Powder', sales: 110 },
+                { name: 'Water Bottle', sales: 105 },
+                { name: 'Notebook Set', sales: 95 },
+                { name: 'Plant Pot', sales: 90 },
+                { name: 'Desk Organizer', sales: 85 },
+                { name: 'Travel Mug', sales: 80 },
+                { name: 'Wireless Charger', sales: 75 },
+                { name: 'Phone Stand', sales: 70 },
+                { name: 'Monitor Stand', sales: 65 }
+            ];
+            
+            // Sort by sales and limit
+            const sortedProducts = [...products].sort((a, b) => b.sales - a.sales).slice(0, limit);
+            
+            // Reverse to show highest at the top
+            sortedProducts.reverse();
+            
+            // Generate chart data
+            return {
+                labels: sortedProducts.map(p => p.name),
+                datasets: [{
+                    label: 'Units Sold',
+                    data: sortedProducts.map(p => p.sales),
+                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                    borderWidth: 1
+                }]
+            };
+        }
+
+        // Demographics Chart
+        let demographicsChart;
+        
+        function initDemographicsChart() {
+            const ctx = document.getElementById('demographicsChart').getContext('2d');
+            
+            demographicsChart = new Chart(ctx, {
+                type: 'pie',
+                data: getDemographicsData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateDemographicsChart() {
+            if (!demographicsChart) return;
+            
+            demographicsChart.data = getDemographicsData();
+            demographicsChart.options.plugins.legend.labels.color = getChartTextColor();
+            demographicsChart.update();
+        }
+        
+        function getDemographicsData() {
+            const filterType = document.getElementById('demographicsFilter').value;
+            
+            let labels, data, backgroundColors;
+            
+            if (filterType === 'age') {
+                labels = ['18-24', '25-34', '35-44', '45-54', '55+'];
+                data = [15, 32, 28, 18, 7];
+                backgroundColors = [
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color1'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color3'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color4'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color5')
+                ];
+            } else if (filterType === 'gender') {
+                labels = ['Female', 'Male', 'Other/Unspecified'];
+                data = [48, 46, 6];
+                backgroundColors = [
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color1'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color3')
+                ];
+            } else if (filterType === 'location') {
+                labels = ['Urban', 'Suburban', 'Rural', 'International'];
+                data = [42, 38, 15, 5];
+                backgroundColors = [
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color4'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color3'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-color1')
+                ];
+            }
+            
+            return {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            };
+        }
+
+        // Comparison Chart
+        let comparisonChart;
+        
+        function initComparisonChart() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            comparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: getComparisonData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateComparisonChart() {
+            if (!comparisonChart) return;
+            
+            comparisonChart.data = getComparisonData();
+            comparisonChart.options.scales.y.grid.color = getChartGridColor();
+            comparisonChart.options.scales.x.grid.color = getChartGridColor();
+            comparisonChart.options.scales.y.ticks.color = getChartTextColor();
+            comparisonChart.options.scales.x.ticks.color = getChartTextColor();
+            comparisonChart.options.plugins.legend.labels.color = getChartTextColor();
+            comparisonChart.update();
+            
+            // Show toast notification
+            showToast('Comparison data updated successfully', 'success', 'Comparison Complete');
+        }
+        
+        function getComparisonData() {
+            // In a real app, this would fetch data based on the selected date ranges
+            // Here we'll simulate data
+            const period1Label = formatDateRange(
+                document.getElementById('period1Start').value,
+                document.getElementById('period1End').value
+            );
+            
+            const period2Label = formatDateRange(
+                document.getElementById('period2Start').value,
+                document.getElementById('period2End').value
+            );
+            
+            // Simulate sales metrics for the two periods
+            return {
+                labels: ['Revenue', 'Orders', 'Avg. Order Value', 'New Customers', 'Returning Customers'],
+                datasets: [
+                    {
+                        label: period1Label,
+                        data: [175000, 2800, 62, 1850, 950],
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color1')
+                    },
+                    {
+                        label: period2Label,
+                        data: [193000, 3100, 64, 2050, 1050],
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color5')
+                    }
+                ]
+            };
+        }
+        
+        // Format date range for display
+        function formatDateRange(start, end) {
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+            
+            const startMonth = startDate.toLocaleString('default', { month: 'short' });
+            const endMonth = endDate.toLocaleString('default', { month: 'short' });
+            
+            if (startMonth === endMonth) {
+                return `${startMonth} ${startDate.getDate()}-${endDate.getDate()}`;
+            } else {
+                return `${startMonth} ${startDate.getDate()} - ${endMonth} ${endDate.getDate()}`;
+            }
+        }
+
+        // Sales Progress Initialization
+        function initializeSalesProgress() {
+            const currentSales = 37500;
+            const targetSales = 50000;
+            const progressPercent = (currentSales / targetSales) * 100;
+            
+            // Update progress bar
+            const progressBar = document.getElementById('salesProgressBar');
+            progressBar.style.width = progressPercent + '%';
+            
+            // Update text display
+            const targetProgress = document.getElementById('targetProgress');
+            targetProgress.textContent = `$${currentSales.toLocaleString()} / $${targetSales.toLocaleString()}`;
+        }
+
+        // Simulate live sales
+        function startLiveSalesSimulation() {
+            const productNames = [
+                'Wireless Earbuds', 'Smart Watch', 'Bluetooth Speaker', 'Coffee Maker',
+                'Yoga Mat', 'Office Chair', 'Desk Lamp', 'External SSD', 'Wireless Mouse',
+                'Air Purifier', 'USB-C Hub', 'Protein Powder', 'Water Bottle', 'Notebook Set'
+            ];
+            
+            const liveSalesList = document.getElementById('liveSalesList');
+            
+            function addNewSale() {
+                // Random product and price
+                const productIndex = Math.floor(Math.random() * productNames.length);
+                const product = productNames[productIndex];
+                const price = Math.floor(Math.random() * 20000) / 100 + 10; // $10 - $210
+                const quantity = Math.floor(Math.random() * 5) + 1;
+                const total = (price * quantity).toFixed(2);
+                
+                // Create sale element
+                const saleItem = document.createElement('div');
+                saleItem.className = 'live-sale-item';
+                
+                saleItem.innerHTML = `
+                    <div class="sale-info">
+                        <div class="sale-product">${product}${quantity > 1 ? ` (x${quantity})` : ''}</div>
+                        <div class="sale-time">Just now</div>
+                    </div>
+                    <div class="sale-amount">$${total}</div>
+                `;
+                
+                // Add to list
+                liveSalesList.prepend(saleItem);
+                
+                // Remove oldest if more than 8
+                if (liveSalesList.children.length > 8) {
+                    liveSalesList.removeChild(liveSalesList.lastChild);
+                }
+                
+                // Update times on existing items
+                updateSaleTimes();
+                
+                // Schedule next sale
+                setTimeout(addNewSale, Math.random() * 15000 + 5000); // 5-20 seconds
+            }
+            
+            // Update time display (e.g., "2m ago", "5m ago")
+            function updateSaleTimes() {
+                const timeElements = liveSalesList.querySelectorAll('.sale-time');
+                
+                timeElements.forEach((el, index) => {
+                    if (index === 0) {
+                        el.textContent = 'Just now';
+                    } else if (index === 1) {
+                        el.textContent = '1m ago';
+                    } else {
+                        el.textContent = `${index}m ago`;
+                    }
+                });
+            }
+            
+            // Initial sales
+            for (let i = 0; i < 5; i++) {
+                addNewSale();
+            }
+        }
+
+        // Simulate strategy effect on charts
+        function simulateStrategyEffect(chartType) {
+            if (chartType === 'sales' && salesChart) {
+                // Simulate positive trend on sales chart
+                const currentData = salesChart.data.datasets[0].data;
+                const improvedData = currentData.map(value => Math.round(value * 1.12)); // 12% improvement
+                
+                salesChart.data.datasets[0].data = improvedData;
+                salesChart.update();
+            } else if (chartType === 'products' && productsChart) {
+                // Simulate changes in product performance
+                const currentData = productsChart.data.datasets[0].data;
+                const adjustedData = currentData.map((value, index) => {
+                    // Increase bottom performers more than top performers
+                    const factor = 1 + (0.25 - (index / currentData.length) * 0.15);
+                    return Math.round(value * factor);
+                });
+                
+                productsChart.data.datasets[0].data = adjustedData;
+                productsChart.update();
+            } else if (chartType === 'demographics' && demographicsChart) {
+                // Simulate shift toward returning customers
+                const demoType = document.getElementById('demographicsFilter').value;
+                let newData = demographicsChart.data.datasets[0].data;
+                
+                if (demoType === 'age') {
+                    // Shift toward middle age groups
+                    newData = [14, 34, 30, 17, 5];
+                } else if (demoType === 'gender') {
+                    // Minimal change in gender distribution
+                    newData = [49, 45, 6];
+                } else if (demoType === 'location') {
+                    // More urban and suburban
+                    newData = [44, 39, 13, 4];
+                }
+                
+                demographicsChart.data.datasets[0].data = newData;
+                demographicsChart.update();
+            }
+        }
+
+        // Helper function for chart grid color based on theme
+        function getChartGridColor() {
+            return document.body.classList.contains('dark-mode') ? 
+                   'rgba(255, 255, 255, 0.1)' : 
+                   'rgba(0, 0, 0, 0.1)';
+        }
+
+        // Helper function for chart text color based on theme
+        function getChartTextColor() {
+            return document.body.classList.contains('dark-mode') ? 
+                   'rgba(255, 255, 255, 0.7)' : 
+                   'rgba(0, 0, 0, 0.7)';
+        }
+
+        // Toast notification function
+        function showToast(message, type, title) {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            let iconClass, bgClass;
+            
+            switch(type) {
+                case 'success':
+                    iconClass = 'fa-check';
+                    bgClass = 'toast-success';
+                    title = title || 'Success';
+                    break;
+                case 'error':
+                    iconClass = 'fa-exclamation-circle';
+                    bgClass = 'toast-error';
+                    title = title || 'Error';
+                    break;
+                case 'warning':
+                    iconClass = 'fa-exclamation-triangle';
+                    bgClass = 'toast-warning';
+                    title = title || 'Warning';
+                    break;
+                default:
+                    iconClass = 'fa-info-circle';
+                    bgClass = 'toast-info';
+                    title = title || 'Info';
+                    type = 'info';
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            toast.innerHTML = `
+                <div class="toast-icon ${bgClass}">
+                    <i class="fa-solid ${iconClass}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <div class="toast-progress"></div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Remove toast after animation completes
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

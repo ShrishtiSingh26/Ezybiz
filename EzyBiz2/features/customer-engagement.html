@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EzyBiz - Customer Engagement</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="static/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to EzyBiz</h1>
+        <nav>
+            <ul>
+                <li><a href="#register">Register</a></li>
+                <li><a href="#login">Login</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#orders">My Orders</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="register">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" id="regName" placeholder="Name" required>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <input type="password" id="regPassword" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <div id="regMessage"></div>
+        </section>
+
+        <section id="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="loginMessage"></div>
+        </section>
+
+        <section id="products">
+            <h2>Products</h2>
+            <div id="productList"></div>
+        </section>
+
+        <section id="orders">
+            <h2>My Orders</h2>
+            <div id="orderList"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 EzyBiz. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Sync Technology - EZYBIZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional Styles for AI Sync Page */
+    .feature-page-header {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      padding: 9rem 0 5rem;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: rgba(255, 255, 255, 0.7);
+      transition: color var(--transition-fast);
+    }
+    
+    .breadcrumb a:hover {
+      color: var(--white);
+    }
+    
+    .breadcrumb i {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .feature-page-title {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    
+    .feature-page-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+      opacity: 0.9;
+    }
+    
+    .feature-highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+    
+    .feature-highlight-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--transition-normal);
+    }
+    
+    .feature-highlight-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature-highlight-icon {
+      width: 70px;
+      height: 70px;
+      background-color: #f0f9ff;
+      border-radius: var(--border-radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .feature-highlight-icon i {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    
+    .feature-highlight-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--gray-800);
+    }
+    
+    .feature-highlight-card p {
+      color: var(--gray-600);
+    }
+    
+    .feature-technology-section {
+      background-color: var(--gray-50);
+      padding: 5rem 0;
+    }
+    
+    .technology-diagram {
+      margin: 3rem 0;
+      text-align: center;
+      position: relative;
+    }
+    
+    .technology-diagram img {
+      max-width: 100%;
+      border-radius: var(--border-radius-xl);
+      box-shadow: var(--shadow-xl);
+    }
+    
+    .feature-case-studies {
+      padding: 5rem 0;
+    }
+    
+    .case-study-card {
+      background-color: var(--white);
+      border-radius: var(--border-radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .case-study-image {
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+    }
+    
+    .case-study-image img {
+      width: 100%;
+      height: auto;
+    }
+    
+    .case-study-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--gray-800);
+    }
+    
+    .case-study-content p {
+      color: var(--gray-600);
+      margin-bottom: 1.5rem;
+    }
+    
+    .case-study-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    
+    .case-stat {
+      flex: 1;
+    }
+    
+    .case-stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .case-stat-label {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    
+    .back-to-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 2rem;
+    }
+    
+    .back-to-home i {
+      transition: transform var(--transition-fast);
+    }
+    
+    .back-to-home:hover i {
+      transform: translateX(-3px);
+    }
+    
+    @media (max-width: 768px) {
+      .feature-page-title {
+        font-size: 2.5rem;
+      }
+      
+      .case-study-card {
+        grid-template-columns: 1fr;
+      }
+      
+      .case-study-stats {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header-container">
+        <a href="index.html" class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          <span>Ezybiz</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="index.html#features" class="nav-link active"><i class="fas fa-star"></i> Features</a></li>
+          <li><a href="index.html#how-it-works" class="nav-link"><i class="fas fa-cogs"></i> How It Works</a></li>
+          <li><a href="index.html#testimonials" class="nav-link"><i class="fas fa-comment-dots"></i> Testimonials</a></li>
+          <li><a href="index.html#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        <div class="auth-buttons">
+          <button class="btn btn-outline" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <button class="btn btn-primary" id="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-shopping-bag"></i>
+        <span>Ezybiz</span>
+      </a>
+      <button class="mobile-menu-close" id="mobile-menu-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html" class="mobile-nav-link"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="index.html#features" class="mobile-nav-link active"><i class="fas fa-star"></i> Features</a></li>
+      <li><a href="index.html#how-it-works" class="mobile-nav-link"><i class="fas fa-cogs"></i> How It Works</a></li>
+      <li><a href="index.html#testimonials" class="mobile-nav-link"><i class="fas fa-comment-dots"></i> Testimonials</a></li>
+      <li><a href="index.html#contact" class="mobile-nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+    <div class="mobile-auth-buttons">
+      <button class="btn btn-outline" id="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button class="btn btn-primary" id="mobile-signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Feature Header -->
+  <section class="feature-page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="index.html#features">Features</a>
+        <i class="fas fa-chevron-right"></i>
+        <span>AI Sync</span>
+      </div>
+      <h1 class="feature-page-title">AI-Powered Synchronization Technology</h1>
+      <p class="feature-page-subtitle">Seamlessly connect your physical and online stores with our cutting-edge AI Sync technology that automatically updates inventory, pricing, and product information across all channels.</p>
+      <button class="btn btn-primary"><i class="fas fa-rocket"></i> Try AI Sync Free</button>
+    </div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </section>
+
+  <!-- Feature Highlights -->
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-subtitle">Key Benefits</span>
+        <h2>Why Choose EzyBiz AI Sync?</h2>
+        <p>Our intelligent synchronization technology provides unmatched benefits for your business operations.</p>
+      </div>
+      
+      <div class="feature-highlight-grid">
+        <div class="feature-highlight-card">
+          <div class="feature-highlight-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Save Time</h3>
+          <p>Eliminate manual data entry and reduce administrative work by up to 80% with automated synchronization between all your sales channels.</p>
+        </div>
+        
+        <div class="feature-highlight-card">
+          <div class="feature-highlight-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Increase Accuracy</h3>
+          <p>Reduce human errors and maintain data consistency with AI-powered validation and conflict resolution across your entire inventory.</p>
+        </div>
+        
+        <div class="feature-highlight-card">
+          <div class="feature-highlight-icon">
+            <i class="fas fa-coins"></i>
+          </div>
+          <h3>Reduce Costs</h3>
+          <p>Lower operational expenses by minimizing manual processes and preventing costly inventory discrepancies and stockouts.</p>
+        </div>
+        
+        <div class="feature-highlight-card">
+          <div class="feature-highlight-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Improve Speed</h3>
+          <p>Update inventory and pricing across all channels in real-time, ensuring customers always see accurate information.</p>
+        </div>
+        
+        <div class="feature-highlight-card">
+          <div class="feature-highlight-icon">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </div>
+          <h3>Scale Easily</h3>
+          <p>Add new sales channels and locations without increasing complexity, as AI Sync handles all the integration work.</p>
+        </div>
+        
+        <div class="feature-highlight-card">
+          <div class="feature-highlight-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h3>Smart Adaptability</h3>
+          <p>The system learns from your business patterns and improves synchronization logic over time with machine learning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Section -->
+  <section class="feature-technology-section">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-subtitle">How It Works</span>
+        <h2>The Technology Behind AI Sync</h2>
+        <p>Our cutting-edge AI technology powers the seamless synchronization between your offline and online sales channels.</p>
+      </div>
+      
+      <div class="technology-diagram">
+        <img src="https://placehold.co/1200x600/e2e8f0/404756?text=AI+Sync+Technology+Diagram" alt="AI Sync Technology Diagram">
+      </div>
+      
+      <div class="feature-details">
+        <div class="feature-detail-item">
+          <div class="feature-detail-icon">
+            <i class="fas fa-file-invoice"></i>
+          </div>
+          <div class="feature-detail-content">
+            <h3>Invoice & Document Processing</h3>
+            <p>EzyBiz uses advanced OCR and Natural Language Processing to automatically extract product information from invoices, purchase orders, and other documents.</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check-circle"></i> Automatic data extraction from PDFs and scanned documents</li>
+              <li><i class="fas fa-check-circle"></i> Recognition of product codes, prices, quantities, and descriptions</li>
+              <li><i class="fas fa-check-circle"></i> Smart matching with existing inventory database</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="feature-detail-item">
+          <div class="feature-detail-content">
+            <h3>Data Transformation & Normalization</h3>
+            <p>Our AI engine standardizes data from different sources to ensure consistency across all channels, handling variations in formats and measurements.</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check-circle"></i> Conversion between different units and measurement systems</li>
+              <li><i class="fas fa-check-circle"></i> Normalization of product attributes and categories</li>
+              <li><i class="fas fa-check-circle"></i> Creation of unified product profiles</li>
+            </ul>
+          </div>
+          <div class="feature-detail-icon">
+            <i class="fas fa-random"></i>
+          </div>
+        </div>
+        
+        <div class="feature-detail-item">
+          <div class="feature-detail-icon">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <div class="feature-detail-content">
+            <h3>Real-time Synchronization Engine</h3>
+            <p>The core synchronization engine ensures that all your sales channels are updated whenever changes occur in any connected system.</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check-circle"></i> Event-based synchronization with millisecond latency</li>
+              <li><i class="fas fa-check-circle"></i> Two-way data flow between offline and online channels</li>
+              <li><i class="fas fa-check-circle"></i> Scheduled batch updates for efficiency</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="feature-detail-item">
+          <div class="feature-detail-content">
+            <h3>Conflict Resolution AI</h3>
+            <p>When conflicting information is detected across different channels, our AI automatically resolves discrepancies based on configurable business rules and learning patterns.</p>
+            <ul class="feature-list">
+              <li><i class="fas fa-check-circle"></i> Intelligent conflict detection across channels</li>
+              <li><i class="fas fa-check-circle"></i> Rule-based and AI-driven resolution strategies</li>
+              <li><i class="fas fa-check-circle"></i> Continuous learning from manual resolutions</li>
+            </ul>
+          </div>
+          <div class="feature-detail-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies -->
+  <section class="feature-case-studies">
+    <div class="container">
+      <div class="section-title">
+        <span class="section-subtitle">Success Stories</span>
+        <h2>Real Businesses Using AI Sync</h2>
+        <p>See how businesses like yours have transformed their operations with EzyBiz AI Sync technology.</p>
+      </div>
+      
+      <div class="case-study-card">
+        <div class="case-study-image">
+          <img src="https://placehold.co/600x400/e2e8f0/404756?text=Retail+Store" alt="Fashion Retailer Case Study">
+        </div>
+        <div class="case-study-content">
+          <h3>Fashion Retailer Eliminates Inventory Discrepancies</h3>
+          <p>A growing fashion retailer with 5 physical stores and an e-commerce website was struggling with inventory discrepancies that led to customer disappointment and lost sales. After implementing EzyBiz AI Sync, they achieved seamless integration between their POS system and online store.</p>
+          <p>"EzyBiz transformed how we manage inventory across our stores. We now have real-time visibility and zero stockouts." - Sarah L., Operations Manager</p>
+          <div class="case-study-stats">
+            <div class="case-stat">
+              <div class="case-stat-number">98%</div>
+              <div class="case-stat-label">Reduction in Inventory Discrepancies</div>
+            </div>
+            <div class="case-stat">
+              <div class="case-stat-number">15hrs</div>
+              <div class="case-stat-label">Weekly Time Saved</div>
+            </div>
+            <div class="case-stat">
+              <div class="case-stat-number">24%</div>
+              <div class="case-stat-label">Increase in Sales</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="case-study-card">
+        <div class="case-study-image">
+          <img src="https://placehold.co/600x400/e2e8f0/404756?text=Grocery+Store" alt="Grocery Chain Case Study">
+        </div>
+        <div class="case-study-content">
+          <h3>Grocery Chain Streamlines Multi-location Management</h3>
+          <p>A regional grocery chain with 12 locations needed a solution to synchronize inventory, pricing, and promotions across all stores and their delivery app. EzyBiz AI Sync provided automated integration with their existing systems and enabled consistent customer experience.</p>
+          <p>"The AI-powered invoice processing feature alone saved us countless hours of manual data entry. Now our entire inventory is synchronized automatically." - Michael T., IT Director</p>
+          <div class="case-study-stats">
+            <div class="case-stat">
+              <div class="case-stat-number">85%</div>
+              <div class="case-stat-label">Faster Price Updates</div>
+            </div>
+            <div class="case-stat">
+              <div class="case-stat-number">32%</div>
+              <div class="case-stat-label">Reduction in Labor Costs</div>
+            </div>
+            <div class="case-stat">
+              <div class="case-stat-number">40+</div>
+              <div class="case-stat-label">Hours Saved Per Week</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <a href="index.html" class="back-to-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-badge">
+          <i class="fas fa-gift"></i>
+          <span>Free Trial</span>
+        </div>
+        <h2>Experience AI Sync for Your Business</h2>
+        <p>Start with a 30-day free trial and see how our AI-powered synchronization can transform your business operations.</p>
+        <div class="cta-buttons">
+          <button class="btn btn-light pulse-animation" id="cta-trial-btn"><i class="fas fa-rocket"></i> Start Free Trial</button>
+          <button class="btn btn-outline-light" id="cta-demo-btn"><i class="fas fa-calendar-alt"></i> Schedule a Demo</button>
+        </div>
+      </div>
+    </div>
+    <div class="cta-wave">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#0f172a" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3><i class="fas fa-shopping-bag"></i> EzyBiz</h3>
+            <p>AI-powered e-commerce platform for small businesses.</p>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+              <li><a href="index.html#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+              <li><a href="index.html#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+              <li><a href="index.html#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+              <li><a href="index.html#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Features</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-chevron-right"></i> AI Demand Forecasting</a></li>
+              <li><a href="#"><i class="fas fa-chevron-right"></i> WhatsApp Integration</a></li>
+              <li><a href="#"><i class="fas fa-chevron-right"></i> O2O Synchronization</a></li>
+              <li><a href="#"><i class="fas fa-chevron-right"></i> Smart Inventory Management</a></li>
+              <li><a href="#"><i class="fas fa-chevron-right"></i> Customer Insights</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p><i class="fas fa-map-marker-alt"></i> 123 Business Avenue, San Francisco, CA 94107</p>
+            <p><i class="fas fa-envelope"></i> contact@ezybiz.com</p>
+            <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 EzyBiz. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    mobileMenuClose.addEventListener('click', function() {
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+    
+    // Sticky Header
+    const header = document.getElementById('header');
+    
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Login/Signup Modal functionality
+    // Note: This would typically connect to the main script.js functionality
+    document.getElementById('login-btn').addEventListener('click', function() {
+      alert('Login functionality would be implemented in conjunction with the main site.');
+    });
+    
+    document.getElementById('signup-btn').addEventListener('click', function() {
+      alert('Signup functionality would be implemented in conjunction with the main site.');
+    });
+    
+    document.getElementById('mobile-login-btn').addEventListener('click', function() {
+      alert('Login functionality would be implemented in conjunction with the main site.');
+    });
+    
+    document.getElementById('mobile-signup-btn').addEventListener('click', function() {
+      alert('Signup functionality would be implemented in conjunction with the main site.');
+    });
+    
+    // CTA buttons
+    document.getElementById('cta-trial-btn').addEventListener('click', function() {
+      alert('Free trial signup would be implemented here.');
+    });
+    
+    document.getElementById('cta-demo-btn').addEventListener('click', function() {
+      alert('Demo scheduling would be implemented here.');
+    });
+  </script>
+</body>
+</html>

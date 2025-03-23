@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EzyBiz - Push Notifications</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-text">EzyBiz</span>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Analytics</a></li>
+                    <li><a href="#" class="active">Notifications</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="notification-bell" id="notificationBell">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notification-count" id="notificationCount">0</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">John Doe</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="page-title">
+                <h1>Notification Center</h1>
+                <p>Manage your notifications and stay updated with real-time alerts</p>
+            </section>
+
+            <div class="notification-grid">
+                <!-- Notification control panel -->
+                <section class="control-panel">
+                    <div class="panel-header">
+                        <h2>Notification Settings</h2>
+                        <button class="toggle-all-btn" id="toggleAllBtn">
+                            <span>Enable All</span>
+                            <div class="toggle-switch" id="masterToggle">
+                                <div class="toggle-slider"></div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="notification-preferences">
+                        <div class="preference-group">
+                            <h3>General Notifications</h3>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-bullhorn pref-icon system"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">System Alerts</span>
+                                        <span class="pref-desc">Important system updates and announcements</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="system">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-envelope pref-icon message"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">Messages</span>
+                                        <span class="pref-desc">New messages from team members</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="message">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="preference-group">
+                            <h3>Project Notifications</h3>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-tasks pref-icon task"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">Task Updates</span>
+                                        <span class="pref-desc">Changes to your assigned tasks</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="task">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-comment-dots pref-icon comment"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">Comments</span>
+                                        <span class="pref-desc">Responses to your comments</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="comment">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-calendar-check pref-icon deadline"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">Deadlines</span>
+                                        <span class="pref-desc">Upcoming project deadlines</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="deadline">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="preference-group">
+                            <h3>Security Notifications</h3>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-shield-alt pref-icon security"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">Security Alerts</span>
+                                        <span class="pref-desc">Account security notifications</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="security">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                            <div class="preference-item">
+                                <div class="pref-info">
+                                    <i class="fa-solid fa-user-shield pref-icon login"></i>
+                                    <div class="pref-details">
+                                        <span class="pref-title">Login Activity</span>
+                                        <span class="pref-desc">New logins to your account</span>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch" data-type="login">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scheduled-notifications">
+                        <h3>Scheduled Do Not Disturb</h3>
+                        <div class="dnd-scheduler">
+                            <div class="time-range">
+                                <div class="time-input">
+                                    <label for="dndStart">From</label>
+                                    <input type="time" id="dndStart" name="dndStart" value="22:00">
+                                </div>
+                                <div class="time-input">
+                                    <label for="dndEnd">To</label>
+                                    <input type="time" id="dndEnd" name="dndEnd" value="07:00">
+                                </div>
+                            </div>
+                            <div class="dnd-days">
+                                <label>Days:</label>
+                                <div class="day-selector">
+                                    <div class="day-checkbox" data-day="mon">M</div>
+                                    <div class="day-checkbox" data-day="tue">T</div>
+                                    <div class="day-checkbox" data-day="wed">W</div>
+                                    <div class="day-checkbox" data-day="thu">T</div>
+                                    <div class="day-checkbox" data-day="fri">F</div>
+                                    <div class="day-checkbox" data-day="sat">S</div>
+                                    <div class="day-checkbox" data-day="sun">S</div>
+                                </div>
+                            </div>
+                            <button class="save-schedule-btn" id="saveDndSchedule">Save Schedule</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notifications display area -->
+                <section class="notifications-container">
+                    <div class="notifications-header">
+                        <h2>Your Notifications</h2>
+                        <div class="notification-actions">
+                            <div class="filter-dropdown">
+                                <button class="filter-btn" id="filterBtn">
+                                    <i class="fa-solid fa-filter"></i>
+                                    <span>Filter</span>
+                                </button>
+                                <div class="filter-dropdown-content" id="filterDropdown">
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterSystem" class="filter-checkbox" data-type="system" checked>
+                                        <label for="filterSystem">System Alerts</label>
+                                    </div>
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterMessage" class="filter-checkbox" data-type="message" checked>
+                                        <label for="filterMessage">Messages</label>
+                                    </div>
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterTask" class="filter-checkbox" data-type="task" checked>
+                                        <label for="filterTask">Task Updates</label>
+                                    </div>
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterComment" class="filter-checkbox" data-type="comment" checked>
+                                        <label for="filterComment">Comments</label>
+                                    </div>
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterDeadline" class="filter-checkbox" data-type="deadline" checked>
+                                        <label for="filterDeadline">Deadlines</label>
+                                    </div>
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterSecurity" class="filter-checkbox" data-type="security" checked>
+                                        <label for="filterSecurity">Security Alerts</label>
+                                    </div>
+                                    <div class="filter-option">
+                                        <input type="checkbox" id="filterLogin" class="filter-checkbox" data-type="login" checked>
+                                        <label for="filterLogin">Login Activity</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="mark-all-read-btn" id="markAllReadBtn">
+                                <i class="fa-solid fa-check-double"></i>
+                                <span>Mark All as Read</span>
+                            </button>
+                            <button class="clear-all-btn" id="clearAllBtn">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Clear All</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="notification-tabs">
+                        <button class="tab-btn active" data-tab="all">All</button>
+                        <button class="tab-btn" data-tab="unread">Unread</button>
+                        <button class="tab-btn" data-tab="read">Read</button>
+                    </div>
+
+                    <div class="notifications-list" id="notificationsList">
+                        <!-- Notifications will be dynamically loaded here -->
+                        <div class="notification-empty" id="emptyNotifications">
+                            <i class="fa-solid fa-bell-slash"></i>
+                            <p>No notifications to display</p>
+                            <span>When you receive notifications, they'll appear here</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Real-time notification preview -->
+                <section class="real-time-preview">
+                    <h2>Real-time Notification Preview</h2>
+                    <div class="preview-container">
+                        <div class="preview-notification" id="previewNotification">
+                            <div class="preview-content">
+                                <div class="preview-icon">
+                                    <i class="fa-solid fa-bell"></i>
+                                </div>
+                                <div class="preview-text">
+                                    <h4>Notification Preview</h4>
+                                    <p>This is how your notifications will appear</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview-controls">
+                            <div class="preview-selector">
+                                <label for="previewType">Notification Type:</label>
+                                <select id="previewType" class="preview-select">
+                                    <option value="system">System Alert</option>
+                                    <option value="message">Message</option>
+                                    <option value="task">Task Update</option>
+                                    <option value="comment">Comment</option>
+                                    <option value="deadline">Deadline</option>
+                                    <option value="security">Security Alert</option>
+                                    <option value="login">Login Activity</option>
+                                </select>
+                            </div>
+                            <button class="test-notification-btn" id="testNotificationBtn">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Test Notification</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">EzyBiz</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Help Center</a>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2023 EzyBiz. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Notification Toast Container -->
+        <div class="notification-toast-container" id="toastContainer"></div>
+    </div>
+
+    <script src="assets/scripts.js"></script>
+</body>
+</html>

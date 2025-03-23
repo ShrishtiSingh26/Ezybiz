@@ -1,0 +1,2644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EzyBiz - Business Insights</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <style>
+        /* Base Styles and Variables */
+        :root {
+            /* Primary brand colors */
+            --primary-color: #4a6cf7;
+            --primary-light: #6384ff;
+            --primary-dark: #3950c4;
+            
+            /* Secondary colors */
+            --secondary-color: #38b2ac;
+            --secondary-light: #4fd1cc;
+            --secondary-dark: #2c8f8a;
+            
+            /* Neutral colors */
+            --bg-white: #ffffff;
+            --bg-light: #f9fafb;
+            --bg-gray: #f3f4f6;
+            --text-dark: #1e293b;
+            --text-medium: #475569;
+            --text-light: #94a3b8;
+            --border-light: #e2e8f0;
+            
+            /* Chart colors */
+            --chart-color1: #4a6cf7;
+            --chart-color2: #38b2ac;
+            --chart-color3: #f97316;
+            --chart-color4: #8b5cf6;
+            --chart-color5: #f43f5e;
+            --chart-color6: #84cc16;
+            
+            /* Status colors */
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+            
+            /* Risk levels */
+            --risk-low: #10b981;
+            --risk-medium: #f59e0b;
+            --risk-high: #ef4444;
+            
+            /* Layout */
+            --header-height: 64px;
+            --footer-height: 60px;
+            --sidebar-width: 240px;
+            --container-padding: 24px;
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            /* Animation */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            /* Z-index layers */
+            --z-header: 100;
+            --z-dropdown: 200;
+            --z-modal: 300;
+            --z-toast: 400;
+            --z-avatar: 150;
+        }
+
+        /* Dark mode variables */
+        .dark-mode {
+            --bg-white: #1a1a1a;
+            --bg-light: #252525;
+            --bg-gray: #333333;
+            --text-dark: #ffffff;
+            --text-medium: #cccccc;
+            --text-light: #999999;
+            --border-light: #444444;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            transition: background-color var(--transition-normal), color var(--transition-normal);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+        }
+
+        button {
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            background: none;
+            transition: background-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        input, select, textarea {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--border-radius-sm);
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        /* Layout Styles */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: var(--container-padding);
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--bg-white);
+            height: var(--header-height);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-header);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--container-padding);
+            transition: background-color var(--transition-normal);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-menu ul {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-medium);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-menu a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-menu a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 1.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-medium);
+            transition: color var(--transition-fast);
+        }
+
+        .notification-bell:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--error-color);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--text-dark);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Page Title Styles */
+        .page-title {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title h1 {
+            font-size: 1.875rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: var(--text-medium);
+            max-width: 600px;
+        }
+
+        .dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--bg-gray);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--border-light);
+        }
+
+        .dark-mode-toggle i {
+            font-size: 18px;
+            color: var(--text-medium);
+        }
+
+        .dark-mode-toggle span {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        /* Filter Controls */
+        .global-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 24px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 8px;
+        }
+
+        .filter-select {
+            height: 38px;
+        }
+
+        .filter-range {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-range input {
+            flex: 1;
+        }
+
+        .filter-button {
+            align-self: flex-end;
+            height: 38px;
+            margin-top: 23px;
+            padding: 0 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+        }
+
+        .filter-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Dashboard Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(300px, auto);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Dashboard Widgets */
+        .dashboard-widget {
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            padding: 24px;
+            overflow: hidden;
+            transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+        }
+
+        .dashboard-widget:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0;
+        }
+
+        .widget-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* Widget sizes */
+        .widget-large {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .widget-medium {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .widget-xlarge {
+            grid-column: span 3;
+            grid-row: span 1;
+        }
+
+        /* Revenue Chart Widget */
+        .revenue-chart {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        /* Profit vs Expenses Widget */
+        .profit-expenses {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Customer Retention Widget */
+        .customer-retention {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        /* Regional Sales Widget */
+        .regional-sales {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        /* Key Metrics Widget */
+        .key-metrics {
+            grid-column: span 3;
+            grid-row: span 1;
+            padding: 0;
+            overflow: visible;
+        }
+
+        .metrics-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .metric-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 24px;
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            transition: background-color var(--transition-fast);
+        }
+
+        .metric-card:hover {
+            background-color: var(--bg-light);
+        }
+
+        .metric-card:nth-child(3n) {
+            border-right: none;
+        }
+
+        .metric-card:nth-last-child(-n+3) {
+            border-bottom: none;
+        }
+
+        .metric-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metric-title i {
+            color: var(--primary-color);
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .metric-trend {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up {
+            color: var(--success-color);
+        }
+
+        .trend-down {
+            color: var(--error-color);
+        }
+
+        .trend-neutral {
+            color: var(--text-light);
+        }
+
+        /* AI Insights Section */
+        .ai-section {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .ai-avatar-container {
+            position: relative;
+            margin-bottom: 20px;
+            height: 120px;
+        }
+
+        .ai-avatar {
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            box-shadow: var(--shadow-lg);
+            animation: pulse 3s infinite;
+            z-index: var(--z-avatar);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .ai-message-container {
+            position: relative;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-lg);
+            padding: 20px 30px 20px 150px;
+            box-shadow: var(--shadow-md);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ai-message {
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .ai-interaction {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: var(--border-radius-md);
+            font-size: 15px;
+        }
+
+        .ai-send-btn {
+            padding: 0 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+        }
+
+        .ai-send-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Financial Forecasting Widget */
+        .financial-forecast {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .forecast-tabs {
+            display: flex;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .forecast-tab {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-medium);
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .forecast-tab:hover {
+            color: var(--primary-color);
+        }
+
+        .forecast-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .forecast-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .scenario-select {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        /* Market Trends Widget */
+        .market-trends {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .trend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+
+        .trend-category {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .trend-growth {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .growth-positive {
+            color: var(--success-color);
+        }
+
+        .growth-negative {
+            color: var(--error-color);
+        }
+
+        /* Competitor Analysis Widget */
+        .competitor-analysis {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .competitor-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .competitor-table th {
+            text-align: left;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        .competitor-table td {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .competitor-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .competitor-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .your-company {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Customer Sentiment Widget */
+        .customer-sentiment {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .sentiment-bars {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .sentiment-bar {
+            flex: 1;
+            margin: 0 8px;
+            text-align: center;
+        }
+
+        .sentiment-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .sentiment-positive .sentiment-value {
+            color: var(--success-color);
+        }
+
+        .sentiment-neutral .sentiment-value {
+            color: var(--warning-color);
+        }
+
+        .sentiment-negative .sentiment-value {
+            color: var(--error-color);
+        }
+
+        .sentiment-label {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        .progress-container {
+            height: 6px;
+            background-color: var(--bg-gray);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .sentiment-positive .progress-bar {
+            background-color: var(--success-color);
+        }
+
+        .sentiment-neutral .progress-bar {
+            background-color: var(--warning-color);
+        }
+
+        .sentiment-negative .progress-bar {
+            background-color: var(--error-color);
+        }
+
+        .feedback-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .feedback-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .feedback-item:last-child {
+            border-bottom: none;
+        }
+
+        .feedback-content {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .feedback-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .feedback-positive {
+            border-left: 3px solid var(--success-color);
+            padding-left: 12px;
+        }
+
+        .feedback-neutral {
+            border-left: 3px solid var(--warning-color);
+            padding-left: 12px;
+        }
+
+        .feedback-negative {
+            border-left: 3px solid var(--error-color);
+            padding-left: 12px;
+        }
+
+        /* Break-even Analysis Widget */
+        .breakeven-analysis {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .calculator-form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .calculate-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .result-display {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-sm);
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: var(--text-medium);
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Risk Assessment Widget */
+        .risk-assessment {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .risk-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .risk-card {
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            border-left: 4px solid var(--risk-medium);
+        }
+
+        .risk-low {
+            border-color: var(--risk-low);
+        }
+
+        .risk-medium {
+            border-color: var(--risk-medium);
+        }
+
+        .risk-high {
+            border-color: var(--risk-high);
+        }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .risk-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .risk-level {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .level-low {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--risk-low);
+        }
+
+        .level-medium {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--risk-medium);
+        }
+
+        .level-high {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--risk-high);
+        }
+
+        .risk-description {
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        /* Cost Optimization Widget */
+        .cost-optimization {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .optimization-tip {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .optimization-tip:last-child {
+            border-bottom: none;
+        }
+
+        .tip-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .tip-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .tip-savings {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--success-color);
+        }
+
+        .tip-description {
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        /* Map Container */
+        .map-container {
+            width: 100%;
+            height: 250px;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .region {
+            fill: var(--bg-gray);
+            stroke: var(--bg-white);
+            stroke-width: 0.5;
+            transition: fill var(--transition-fast);
+        }
+
+        .region:hover {
+            fill: var(--primary-light);
+            cursor: pointer;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 8px 12px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-md);
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .tooltip-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .tooltip-value {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--bg-white);
+            padding: 16px var(--container-padding);
+            border-top: 1px solid var(--border-light);
+            transition: background-color var(--transition-normal);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-link {
+            font-size: 14px;
+            color: var(--text-medium);
+            transition: color var(--transition-fast);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: var(--z-toast);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-lg);
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .toast-success {
+            background-color: var(--success-color);
+        }
+
+        .toast-error {
+            background-color: var(--error-color);
+        }
+
+        .toast-info {
+            background-color: var(--info-color);
+        }
+
+        .toast-warning {
+            background-color: var(--warning-color);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+            animation: progress 3s linear;
+        }
+
+        /* Animations */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .widget-xlarge {
+                grid-column: span 2;
+            }
+
+            .widget-large {
+                grid-column: span 2;
+            }
+
+            .metric-card:nth-child(3n) {
+                border-right: 1px solid var(--border-light);
+            }
+
+            .metric-card:nth-child(2n) {
+                border-right: none;
+            }
+
+            .metric-card:nth-last-child(-n+3) {
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .metric-card:nth-last-child(-n+2) {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .widget-xlarge, .widget-large, .widget-medium {
+                grid-column: span 1;
+            }
+
+            .page-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .global-filters {
+                flex-direction: column;
+            }
+
+            .filter-button {
+                align-self: stretch;
+                margin-top: 10px;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .ai-message-container {
+                padding: 20px;
+                margin-top: 70px;
+            }
+
+            .ai-avatar {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -50px;
+            }
+
+            .metric-card {
+                min-width: auto;
+                flex: 0 0 100%;
+                border-right: none;
+            }
+
+            .metric-card:nth-last-child(-n+2) {
+                border-bottom: 1px solid var(--border-light);
+            }
+
+            .metric-card:last-child {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header {
+                padding: 0 16px;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-text">EzyBiz</span>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="inventory-management.html">Inventory</a></li>
+                    <li><a href="sales-optimization.html">Sales Optimization</a></li>
+                    <li><a href="#" class="active">Business Insights</a></li>
+                    <li><a href="push-notifications.html">Notifications</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="notification-bell" id="notificationBell">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notification-count" id="notificationCount">3</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">John Doe</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="page-title">
+                <div>
+                    <h1>Business Insights</h1>
+                    <p>Analyze your business performance and discover opportunities for growth and optimization</p>
+                </div>
+                <div class="dark-mode-toggle" id="darkModeToggle">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+            </section>
+
+            <!-- Global Filters -->
+            <div class="global-filters">
+                <div class="filter-group">
+                    <div class="filter-label">Date Range</div>
+                    <div class="filter-range">
+                        <input type="date" id="startDate" value="2025-01-01">
+                        <input type="date" id="endDate" value="2025-03-31">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">Product Category</div>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="all" selected>All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="home">Home & Kitchen</option>
+                        <option value="beauty">Beauty & Personal Care</option>
+                        <option value="sports">Sports & Outdoors</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">Region</div>
+                    <select class="filter-select" id="regionFilter">
+                        <option value="all" selected>All Regions</option>
+                        <option value="north">North</option>
+                        <option value="south">South</option>
+                        <option value="east">East</option>
+                        <option value="west">West</option>
+                        <option value="central">Central</option>
+                    </select>
+                </div>
+                <button class="filter-button" id="applyFilters">
+                    <i class="fa-solid fa-filter"></i>
+                    Apply Filters
+                </button>
+            </div>
+
+            <!-- Key Metrics Widget -->
+            <div class="dashboard-widget key-metrics">
+                <div class="metrics-container">
+                    <div class="metric-card">
+                        <div class="metric-title">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                            Revenue
+                        </div>
+                        <div class="metric-value">$253,582</div>
+                        <div class="metric-trend trend-up">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>15.3% vs previous period</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            Profit Margin
+                        </div>
+                        <div class="metric-value">32.8%</div>
+                        <div class="metric-trend trend-up">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>2.5% vs previous period</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">
+                            <i class="fa-solid fa-users"></i>
+                            Customers
+                        </div>
+                        <div class="metric-value">3,891</div>
+                        <div class="metric-trend trend-up">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>8.7% vs previous period</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">
+                            <i class="fa-solid fa-repeat"></i>
+                            Retention Rate
+                        </div>
+                        <div class="metric-value">68.2%</div>
+                        <div class="metric-trend trend-down">
+                            <i class="fa-solid fa-arrow-down"></i>
+                            <span>1.8% vs previous period</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                            Avg. Order Value
+                        </div>
+                        <div class="metric-value">$85.36</div>
+                        <div class="metric-trend trend-up">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            <span>5.2% vs previous period</span>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                            Cost per Acquisition
+                        </div>
+                        <div class="metric-value">$28.45</div>
+                        <div class="metric-trend trend-down">
+                            <i class="fa-solid fa-arrow-down"></i>
+                            <span>3.7% vs previous period</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Revenue Growth Widget -->
+                <div class="dashboard-widget revenue-chart">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Revenue Growth</h3>
+                        <div class="widget-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Profit vs Expenses Widget -->
+                <div class="dashboard-widget profit-expenses">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Profit vs Expenses</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color2);">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="profitExpensesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Customer Retention Widget -->
+                <div class="dashboard-widget customer-retention">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Customer Retention</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color3);">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="retentionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Regional Sales Widget -->
+                <div class="dashboard-widget regional-sales">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Regional Sales Performance</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color4);">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                    </div>
+                    <div id="mapContainer" class="map-container">
+                        <!-- Map will be rendered here -->
+                    </div>
+                    <div id="mapTooltip" class="tooltip">
+                        <div class="tooltip-title">Region Name</div>
+                        <div class="tooltip-value">$0</div>
+                    </div>
+                </div>
+
+                <!-- AI Insights Section -->
+                <div class="dashboard-widget ai-section">
+                    <div class="ai-avatar-container">
+                        <div class="ai-avatar">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                    </div>
+                    <div class="ai-message-container">
+                        <p class="ai-message" id="aiMessage">Hello John! I've been analyzing your business data and noticed some interesting trends. Your revenue has increased by 15.3% compared to the previous period, but your customer retention rate has decreased slightly. Would you like some recommendations to improve retention?</p>
+                    </div>
+                    <div class="ai-interaction">
+                        <input type="text" class="ai-input" id="aiInput" placeholder="Ask me about your business performance or for specific insights...">
+                        <button class="ai-send-btn" id="aiSendBtn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Send
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Financial Forecasting Widget -->
+                <div class="dashboard-widget financial-forecast">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Financial & Sales Forecasting</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color5);">
+                            <i class="fa-solid fa-binoculars"></i>
+                        </div>
+                    </div>
+                    <div class="forecast-tabs">
+                        <div class="forecast-tab active" data-tab="sales">Sales Forecast</div>
+                        <div class="forecast-tab" data-tab="revenue">Revenue Forecast</div>
+                        <div class="forecast-tab" data-tab="profit">Profit Forecast</div>
+                    </div>
+                    <div class="forecast-controls">
+                        <select class="scenario-select" id="scenarioSelect">
+                            <option value="baseline">Baseline Forecast</option>
+                            <option value="marketing">Increased Marketing (+20%)</option>
+                            <option value="pricing">Price Adjustment (+10%)</option>
+                            <option value="expansion">Market Expansion</option>
+                        </select>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Market Trends Widget -->
+                <div class="dashboard-widget market-trends">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Market Trends</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color6);">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                    </div>
+                    <div class="trend-list">
+                        <div class="trend-item">
+                            <div class="trend-category">Electronics</div>
+                            <div class="trend-growth growth-positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                <span>18.5%</span>
+                            </div>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-category">Clothing</div>
+                            <div class="trend-growth growth-positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                <span>7.2%</span>
+                            </div>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-category">Home & Kitchen</div>
+                            <div class="trend-growth growth-positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                <span>12.8%</span>
+                            </div>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-category">Beauty & Personal Care</div>
+                            <div class="trend-growth growth-positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                <span>9.3%</span>
+                            </div>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-category">Books & Media</div>
+                            <div class="trend-growth growth-negative">
+                                <i class="fa-solid fa-arrow-down"></i>
+                                <span>2.1%</span>
+                            </div>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-category">Sports & Outdoors</div>
+                            <div class="trend-growth growth-positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                <span>15.6%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitor Analysis Widget -->
+                <div class="dashboard-widget competitor-analysis">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Competitor Analysis</h3>
+                        <div class="widget-icon">
+                            <i class="fa-solid fa-user-group"></i>
+                        </div>
+                    </div>
+                    <table class="competitor-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Market Share</th>
+                                <th>Growth</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="competitor-name your-company">Your Company</td>
+                                <td>24.5%</td>
+                                <td class="growth-positive">+5.3%</td>
+                            </tr>
+                            <tr>
+                                <td class="competitor-name">Competitor A</td>
+                                <td>32.1%</td>
+                                <td class="growth-positive">+2.1%</td>
+                            </tr>
+                            <tr>
+                                <td class="competitor-name">Competitor B</td>
+                                <td>18.7%</td>
+                                <td class="growth-negative">-1.5%</td>
+                            </tr>
+                            <tr>
+                                <td class="competitor-name">Competitor C</td>
+                                <td>15.2%</td>
+                                <td class="growth-positive">+3.8%</td>
+                            </tr>
+                            <tr>
+                                <td class="competitor-name">Competitor D</td>
+                                <td>9.5%</td>
+                                <td class="growth-negative">-0.7%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Customer Sentiment Widget -->
+                <div class="dashboard-widget customer-sentiment">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Customer Sentiment Analysis</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color3);">
+                            <i class="fa-solid fa-face-smile"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="sentiment-bars">
+                        <div class="sentiment-bar sentiment-positive">
+                            <div class="sentiment-value">72%</div>
+                            <div class="sentiment-label">Positive</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="sentiment-bar sentiment-neutral">
+                            <div class="sentiment-value">21%</div>
+                            <div class="sentiment-label">Neutral</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 21%"></div>
+                            </div>
+                        </div>
+                        <div class="sentiment-bar sentiment-negative">
+                            <div class="sentiment-value">7%</div>
+                            <div class="sentiment-label">Negative</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 7%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feedback-list">
+                        <div class="feedback-item feedback-positive">
+                            <div class="feedback-content">"Amazing customer service! The support team went above and beyond to help me with my issue."</div>
+                            <div class="feedback-meta">
+                                <span>John S. | Product: Smart Watch</span>
+                                <span>2 days ago</span>
+                            </div>
+                        </div>
+                        <div class="feedback-item feedback-positive">
+                            <div class="feedback-content">"This product exceeded my expectations. Great quality and value for money."</div>
+                            <div class="feedback-meta">
+                                <span>Emma T. | Product: Wireless Earbuds</span>
+                                <span>1 week ago</span>
+                            </div>
+                        </div>
+                        <div class="feedback-item feedback-neutral">
+                            <div class="feedback-content">"Decent product, but shipping took longer than expected. Would appreciate faster delivery next time."</div>
+                            <div class="feedback-meta">
+                                <span>Michael L. | Product: Coffee Maker</span>
+                                <span>3 days ago</span>
+                            </div>
+                        </div>
+                        <div class="feedback-item feedback-negative">
+                            <div class="feedback-content">"Product was damaged upon arrival. The return process was complicated and time-consuming."</div>
+                            <div class="feedback-meta">
+                                <span>Sarah K. | Product: Desk Lamp</span>
+                                <span>5 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Break-even Analysis Widget -->
+                <div class="dashboard-widget breakeven-analysis">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Break-even Analysis</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color2);">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                    </div>
+                    <div class="calculator-form">
+                        <div class="form-group">
+                            <label for="fixedCosts">Fixed Costs ($)</label>
+                            <input type="number" id="fixedCosts" value="25000">
+                        </div>
+                        <div class="form-group">
+                            <label for="variableCosts">Variable Costs per Unit ($)</label>
+                            <input type="number" id="variableCosts" value="15">
+                        </div>
+                        <div class="form-group">
+                            <label for="sellingPrice">Selling Price per Unit ($)</label>
+                            <input type="number" id="sellingPrice" value="35">
+                        </div>
+                        <button class="calculate-btn" id="calculateBreakeven">Calculate</button>
+                    </div>
+                    <div class="result-display">
+                        <div class="result-label">Break-even Point:</div>
+                        <div class="result-value" id="breakevenResult">1,250 units</div>
+                        <div class="result-label" style="margin-top: 10px;">Revenue at Break-even:</div>
+                        <div class="result-value" id="breakevenRevenue">$43,750</div>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment Widget -->
+                <div class="dashboard-widget risk-assessment">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Risk Assessment & Alerts</h3>
+                        <div class="widget-icon" style="background-color: var(--chart-color5);">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                    </div>
+                    <div class="risk-cards">
+                        <div class="risk-card risk-high">
+                            <div class="risk-header">
+                                <div class="risk-title">Inventory Stockout</div>
+                                <div class="risk-level level-high">High</div>
+                            </div>
+                            <div class="risk-description">3 products are at risk of stockout within 7 days based on current sales velocity.</div>
+                        </div>
+                        <div class="risk-card risk-medium">
+                            <div class="risk-header">
+                                <div class="risk-title">Margin Pressure</div>
+                                <div class="risk-level level-medium">Medium</div>
+                            </div>
+                            <div class="risk-description">Rising supplier costs are reducing margins in the Electronics category.</div>
+                        </div>
+                        <div class="risk-card risk-low">
+                            <div class="risk-header">
+                                <div class="risk-title">Customer Churn</div>
+                                <div class="risk-level level-low">Low</div>
+                            </div>
+                            <div class="risk-description">Slight increase in customer churn rate, but still within expected ranges.</div>
+                        </div>
+                        <div class="risk-card risk-medium">
+                            <div class="risk-header">
+                                <div class="risk-title">Market Competition</div>
+                                <div class="risk-level level-medium">Medium</div>
+                            </div>
+                            <div class="risk-description">New competitor entered the market with aggressive pricing in your top category.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cost Optimization Widget -->
+                <div class="dashboard-widget cost-optimization">
+                    <div class="widget-header">
+                        <h3 class="widget-title">Cost Optimization</h3>
+                        <div class="widget-icon" style="background-color: var(--success-color);">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                        </div>
+                    </div>
+                    <div class="optimization-tips">
+                        <div class="optimization-tip">
+                            <div class="tip-header">
+                                <div class="tip-title">Supplier Consolidation</div>
+                                <div class="tip-savings">-$15,600/yr</div>
+                            </div>
+                            <div class="tip-description">Consolidate 3 smaller suppliers into your main supplier for better volume discounts.</div>
+                        </div>
+                        <div class="optimization-tip">
+                            <div class="tip-header">
+                                <div class="tip-title">Automated Inventory Management</div>
+                                <div class="tip-savings">-$23,400/yr</div>
+                            </div>
+                            <div class="tip-description">Implement automated reordering to reduce overstock and stockout costs.</div>
+                        </div>
+                        <div class="optimization-tip">
+                            <div class="tip-header">
+                                <div class="tip-title">Shipping Optimization</div>
+                                <div class="tip-savings">-$9,800/yr</div>
+                            </div>
+                            <div class="tip-description">Renegotiate shipping contracts and optimize packaging dimensions.</div>
+                        </div>
+                        <div class="optimization-tip">
+                            <div class="tip-header">
+                                <div class="tip-title">Energy Efficiency</div>
+                                <div class="tip-savings">-$7,200/yr</div>
+                            </div>
+                            <div class="tip-description">Upgrade to energy-efficient lighting and climate control systems.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-text">
+                    &copy; 2025 EzyBiz. All rights reserved.
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer">
+        <!-- Toasts will be dynamically added here -->
+    </div>
+
+    <script>
+        // DOM Elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            
+            // Filter elements
+            const applyFiltersBtn = document.getElementById('applyFilters');
+            
+            // AI Elements
+            const aiMessage = document.getElementById('aiMessage');
+            const aiInput = document.getElementById('aiInput');
+            const aiSendBtn = document.getElementById('aiSendBtn');
+            
+            // Forecast elements
+            const forecastTabs = document.querySelectorAll('.forecast-tab');
+            const scenarioSelect = document.getElementById('scenarioSelect');
+            
+            // Break-even calculator
+            const calculateBreakevenBtn = document.getElementById('calculateBreakeven');
+
+            // Theme State
+            let isDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            // Initialize Theme
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.querySelector('i').classList.remove('fa-moon');
+                darkModeToggle.querySelector('i').classList.add('fa-sun');
+                darkModeToggle.querySelector('span').textContent = 'Light Mode';
+            }
+
+            // Toggle Dark Mode
+            darkModeToggle.addEventListener('click', function() {
+                isDarkMode = !isDarkMode;
+                
+                if (isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    darkModeToggle.querySelector('i').classList.remove('fa-moon');
+                    darkModeToggle.querySelector('i').classList.add('fa-sun');
+                    darkModeToggle.querySelector('span').textContent = 'Light Mode';
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    darkModeToggle.querySelector('i').classList.remove('fa-sun');
+                    darkModeToggle.querySelector('i').classList.add('fa-moon');
+                    darkModeToggle.querySelector('span').textContent = 'Dark Mode';
+                }
+                
+                localStorage.setItem('darkMode', isDarkMode);
+                
+                // Update chart themes
+                updateAllCharts();
+            });
+
+            // Apply filters action
+            applyFiltersBtn.addEventListener('click', function() {
+                applyFilters();
+            });
+
+            // AI Chat functionality
+            aiSendBtn.addEventListener('click', function() {
+                handleAIChat();
+            });
+            
+            aiInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleAIChat();
+                }
+            });
+
+            // Forecast tab switcher
+            forecastTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    forecastTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    updateForecastChart();
+                });
+            });
+
+            // Scenario select
+            scenarioSelect.addEventListener('change', function() {
+                updateForecastChart();
+            });
+
+            // Break-even calculator
+            calculateBreakevenBtn.addEventListener('click', function() {
+                calculateBreakeven();
+            });
+
+            // Initialize Charts and Maps
+            initializeCharts();
+            initializeMap();
+            
+            // Show initial toast
+            setTimeout(() => {
+                showToast('Data updated as of March 23, 2025', 'info', 'Business Insights');
+            }, 1000);
+        });
+
+        // AI Chat handler
+        function handleAIChat() {
+            const aiInput = document.getElementById('aiInput');
+            const aiMessage = document.getElementById('aiMessage');
+            const query = aiInput.value.trim();
+            
+            if (query === '') return;
+            
+            // Clear input
+            aiInput.value = '';
+            
+            // Show thinking state
+            aiMessage.innerHTML = '<i>Analyzing data...</i>';
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                const response = getAIResponse(query);
+                aiMessage.innerText = response;
+            }, 1000);
+        }
+
+        // AI Response generator
+        function getAIResponse(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Basic pattern matching for common questions
+            if (lowerQuery.includes('profitable') || lowerQuery.includes('best product')) {
+                return "Based on your data, your most profitable product category is Electronics with a 38% profit margin. Specifically, the 'Wireless Bluetooth Earbuds' product generates the highest profit per unit at $45.20. Consider expanding your marketing efforts for this product line.";
+            } else if (lowerQuery.includes('retention') || lowerQuery.includes('churn')) {
+                return "Your customer retention rate is currently 68.2%, which is 1.8% lower than the previous period. I recommend implementing a loyalty program for customers who have made more than 2 purchases. Businesses with similar profiles have seen a 12-18% improvement in retention rates using tiered reward systems.";
+            } else if (lowerQuery.includes('revenue') || lowerQuery.includes('sales')) {
+                return "Your revenue is growing at a healthy rate of 15.3% compared to the same period last year. The East region is your strongest market with 32% of total sales. However, the West region shows the highest growth potential with a 27% year-over-year increase despite only representing 18% of your current sales.";
+            } else if (lowerQuery.includes('cost') || lowerQuery.includes('expense')) {
+                return "Your operational costs have increased by 7.8% compared to last year, which is lower than your revenue growth of 15.3%, indicating improved efficiency. The biggest cost increase was in marketing (+12.5%), but this investment is yielding positive returns with a 2.3x ROI. I recommend focusing on supplier consolidation, which could save approximately $15,600 annually.";
+            } else if (lowerQuery.includes('competitor') || lowerQuery.includes('market')) {
+                return "You currently hold 24.5% market share, ranking #2 in your industry. Your growth rate of 5.3% is outpacing the industry average of 3.1%. Competitor A remains the market leader with 32.1% share but is only growing at 2.1%. There's an opportunity to target Competitor B's customers as they're experiencing negative growth and customer satisfaction issues.";
+            } else if (lowerQuery.includes('forecast') || lowerQuery.includes('prediction')) {
+                return "Based on current trends and seasonality analysis, I forecast a 17.8% revenue growth for the next quarter, with the Electronics and Sports & Outdoors categories leading this expansion. If you increase marketing spend by 20% as simulated in our forecasting model, this could potentially accelerate growth to 22.3%, though with a temporary impact on profit margins.";
+            } else {
+                return "Looking at your overall business performance, I see several opportunities for growth. Your revenue is up 15.3%, driven primarily by strong performance in the Electronics category. However, your customer retention rate has decreased slightly by 1.8%. I recommend focusing on improving customer retention through personalized follow-up communications and a loyalty program, which could potentially increase your revenue by an additional 8-12% over the next year.";
+            }
+        }
+
+        // Apply dashboard filters
+        function applyFilters() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const category = document.getElementById('categoryFilter').value;
+            const region = document.getElementById('regionFilter').value;
+            
+            // In a real app, we would fetch data based on these filters
+            // Here we'll just show a notification and update the charts
+            
+            showToast('Filters applied successfully', 'success');
+            updateAllCharts();
+            
+            // Log the filter values for demonstration
+            console.log('Filters applied:', {
+                dateRange: `${startDate} to ${endDate}`,
+                category: category,
+                region: region
+            });
+        }
+
+        // Break-even calculation
+        function calculateBreakeven() {
+            const fixedCosts = parseFloat(document.getElementById('fixedCosts').value);
+            const variableCosts = parseFloat(document.getElementById('variableCosts').value);
+            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value);
+            
+            if (isNaN(fixedCosts) || isNaN(variableCosts) || isNaN(sellingPrice)) {
+                showToast('Please enter valid numbers', 'error');
+                return;
+            }
+            
+            if (sellingPrice <= variableCosts) {
+                showToast('Selling price must be greater than variable costs', 'error');
+                return;
+            }
+            
+            // Calculate break-even point
+            const contributionMargin = sellingPrice - variableCosts;
+            const breakEvenUnits = Math.ceil(fixedCosts / contributionMargin);
+            const breakEvenRevenue = breakEvenUnits * sellingPrice;
+            
+            // Update display
+            document.getElementById('breakevenResult').textContent = breakEvenUnits.toLocaleString() + ' units';
+            document.getElementById('breakevenRevenue').textContent = '$' + breakEvenRevenue.toLocaleString();
+            
+            showToast('Break-even analysis completed', 'success');
+        }
+
+        // Initialize all charts
+        function initializeCharts() {
+            initRevenueChart();
+            initProfitExpensesChart();
+            initRetentionChart();
+            initForecastChart();
+        }
+
+        // Update all charts (for theme changes or filter updates)
+        function updateAllCharts() {
+            updateRevenueChart();
+            updateProfitExpensesChart();
+            updateRetentionChart();
+            updateForecastChart();
+        }
+        
+        // Helper function for chart grid color based on theme
+        function getChartGridColor() {
+            return document.body.classList.contains('dark-mode') ? 
+                   'rgba(255, 255, 255, 0.1)' : 
+                   'rgba(0, 0, 0, 0.1)';
+        }
+
+        // Helper function for chart text color based on theme
+        function getChartTextColor() {
+            return document.body.classList.contains('dark-mode') ? 
+                   'rgba(255, 255, 255, 0.7)' : 
+                   'rgba(0, 0, 0, 0.7)';
+        }
+
+        // Revenue Chart
+        let revenueChart;
+        
+        function initRevenueChart() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: getRevenueData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor(),
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRevenueChart() {
+            if (!revenueChart) return;
+            
+            revenueChart.data = getRevenueData();
+            revenueChart.options.scales.y.grid.color = getChartGridColor();
+            revenueChart.options.scales.x.grid.color = getChartGridColor();
+            revenueChart.options.scales.y.ticks.color = getChartTextColor();
+            revenueChart.options.scales.x.ticks.color = getChartTextColor();
+            revenueChart.options.plugins.legend.labels.color = getChartTextColor();
+            revenueChart.update();
+        }
+        
+        function getRevenueData() {
+            return {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [
+                    {
+                        label: '2025',
+                        data: [68000, 72000, 83000, 85000, 92000, 98000, 105000, 115000, 108000, 125000, 130000, 142000],
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color1'),
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color1') + '30',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: '2024',
+                        data: [58000, 62000, 72000, 78000, 82000, 88000, 92000, 99000, 95000, 110000, 118000, 125000],
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2') + '30',
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            };
+        }
+
+        // Profit vs Expenses Chart
+        let profitExpensesChart;
+        
+        function initProfitExpensesChart() {
+            const ctx = document.getElementById('profitExpensesChart').getContext('2d');
+            
+            profitExpensesChart = new Chart(ctx, {
+                type: 'bar',
+                data: getProfitExpensesData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor(),
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateProfitExpensesChart() {
+            if (!profitExpensesChart) return;
+            
+            profitExpensesChart.data = getProfitExpensesData();
+            profitExpensesChart.options.scales.y.grid.color = getChartGridColor();
+            profitExpensesChart.options.scales.x.grid.color = getChartGridColor();
+            profitExpensesChart.options.scales.y.ticks.color = getChartTextColor();
+            profitExpensesChart.options.scales.x.ticks.color = getChartTextColor();
+            profitExpensesChart.options.plugins.legend.labels.color = getChartTextColor();
+            profitExpensesChart.update();
+        }
+        
+        function getProfitExpensesData() {
+            return {
+                labels: ['Q1', 'Q2', 'Q3'],
+                datasets: [
+                    {
+                        label: 'Profit',
+                        data: [72000, 88000, 95000],
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--success-color'),
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--success-color'),
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Expenses',
+                        data: [152000, 176000, 183000],
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--error-color'),
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--error-color'),
+                        borderWidth: 1
+                    }
+                ]
+            };
+        }
+
+        // Customer Retention Chart
+        let retentionChart;
+        
+        function initRetentionChart() {
+            const ctx = document.getElementById('retentionChart').getContext('2d');
+            
+            retentionChart = new Chart(ctx, {
+                type: 'pie',
+                data: getRetentionData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRetentionChart() {
+            if (!retentionChart) return;
+            
+            retentionChart.data = getRetentionData();
+            retentionChart.options.plugins.legend.labels.color = getChartTextColor();
+            retentionChart.update();
+        }
+        
+        function getRetentionData() {
+            return {
+                labels: ['Returning Customers', 'New Customers'],
+                datasets: [{
+                    data: [68, 32],
+                    backgroundColor: [
+                        getComputedStyle(document.documentElement).getPropertyValue('--chart-color1'),
+                        getComputedStyle(document.documentElement).getPropertyValue('--chart-color3')
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+        }
+
+        // Forecast Chart
+        let forecastChart;
+        
+        function initForecastChart() {
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+            
+            forecastChart = new Chart(ctx, {
+                type: 'line',
+                data: getForecastData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: getChartGridColor()
+                            },
+                            ticks: {
+                                color: getChartTextColor()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateForecastChart() {
+            if (!forecastChart) return;
+            
+            forecastChart.data = getForecastData();
+            forecastChart.options.scales.y.grid.color = getChartGridColor();
+            forecastChart.options.scales.x.grid.color = getChartGridColor();
+            forecastChart.options.scales.y.ticks.color = getChartTextColor();
+            forecastChart.options.scales.x.ticks.color = getChartTextColor();
+            forecastChart.options.plugins.legend.labels.color = getChartTextColor();
+            forecastChart.update();
+        }
+        
+        function getForecastData() {
+            const activeTab = document.querySelector('.forecast-tab.active').dataset.tab;
+            const selectedScenario = document.getElementById('scenarioSelect').value;
+            
+            // Historical data (same for all scenarios)
+            let historicalData;
+            let forecastData;
+            let yAxisLabel;
+            
+            if (activeTab === 'sales') {
+                historicalData = [1250, 1320, 1380, 1450, 1520, 1580];
+                yAxisLabel = 'Units Sold';
+                
+                // Different forecast scenarios
+                if (selectedScenario === 'baseline') {
+                    forecastData = [1650, 1720, 1790];
+                } else if (selectedScenario === 'marketing') {
+                    forecastData = [1750, 1880, 2020];
+                } else if (selectedScenario === 'pricing') {
+                    forecastData = [1590, 1650, 1710];
+                } else if (selectedScenario === 'expansion') {
+                    forecastData = [1680, 1810, 1950];
+                }
+            } else if (activeTab === 'revenue') {
+                historicalData = [72000, 76000, 83000, 85000, 92000, 98000];
+                yAxisLabel = 'Revenue ($)';
+                
+                if (selectedScenario === 'baseline') {
+                    forecastData = [104000, 110000, 117000];
+                } else if (selectedScenario === 'marketing') {
+                    forecastData = [112000, 120000, 129000];
+                } else if (selectedScenario === 'pricing') {
+                    forecastData = [112000, 118000, 124000];
+                } else if (selectedScenario === 'expansion') {
+                    forecastData = [108000, 118000, 128000];
+                }
+            } else if (activeTab === 'profit') {
+                historicalData = [23000, 25000, 27000, 28500, 31000, 33000];
+                yAxisLabel = 'Profit ($)';
+                
+                if (selectedScenario === 'baseline') {
+                    forecastData = [35000, 37000, 39000];
+                } else if (selectedScenario === 'marketing') {
+                    forecastData = [33000, 36000, 39000];
+                } else if (selectedScenario === 'pricing') {
+                    forecastData = [38000, 40000, 42000];
+                } else if (selectedScenario === 'expansion') {
+                    forecastData = [32000, 36000, 41000];
+                }
+            }
+
+            return {
+                labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr (F)', 'May (F)', 'Jun (F)'],
+                datasets: [
+                    {
+                        label: 'Historical',
+                        data: [...historicalData, null, null, null],
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color2'),
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Forecast',
+                        data: [null, null, null, null, null, null, ...forecastData],
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--chart-color5'),
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 4
+                    }
+                ]
+            };
+        }
+
+        // Initialize Map
+        function initializeMap() {
+            // Simple US state map for demonstration
+            const width = document.getElementById('mapContainer').offsetWidth;
+            const height = 250;
+            const mapContainer = d3.select('#mapContainer');
+            
+            // Clear previous SVG
+            mapContainer.selectAll('svg').remove();
+            
+            const svg = mapContainer.append('svg')
+                .attr('width', width)
+                .attr('height', height);
+                
+            const projection = d3.geoAlbersUsa()
+                .scale(width)
+                .translate([width / 2, height / 2]);
+                
+            const path = d3.geoPath()
+                .projection(projection);
+                
+            // Sample state data with sales values
+            const stateData = [
+                { id: 'AL', name: 'Alabama', value: 18540 },
+                { id: 'AK', name: 'Alaska', value: 7250 },
+                { id: 'AZ', name: 'Arizona', value: 24680 },
+                { id: 'AR', name: 'Arkansas', value: 12350 },
+                { id: 'CA', name: 'California', value: 85620 },
+                { id: 'CO', name: 'Colorado', value: 26470 },
+                { id: 'CT', name: 'Connecticut', value: 15280 },
+                { id: 'DE', name: 'Delaware', value: 5980 },
+                { id: 'FL', name: 'Florida', value: 58230 },
+                { id: 'GA', name: 'Georgia', value: 32470 },
+                { id: 'HI', name: 'Hawaii', value: 8750 },
+                { id: 'ID', name: 'Idaho', value: 9840 },
+                { id: 'IL', name: 'Illinois', value: 42850 },
+                { id: 'IN', name: 'Indiana', value: 21690 },
+                { id: 'IA', name: 'Iowa', value: 14580 },
+                { id: 'KS', name: 'Kansas', value: 12940 },
+                { id: 'KY', name: 'Kentucky', value: 15620 },
+                { id: 'LA', name: 'Louisiana', value: 17850 },
+                { id: 'ME', name: 'Maine', value: 8450 },
+                { id: 'MD', name: 'Maryland', value: 23670 },
+                { id: 'MA', name: 'Massachusetts', value: 28940 },
+                { id: 'MI', name: 'Michigan', value: 31250 },
+                { id: 'MN', name: 'Minnesota', value: 22380 },
+                { id: 'MS', name: 'Mississippi', value: 11570 },
+                { id: 'MO', name: 'Missouri', value: 22480 },
+                { id: 'MT', name: 'Montana', value: 6950 },
+                { id: 'NE', name: 'Nebraska', value: 9840 },
+                { id: 'NV', name: 'Nevada', value: 14580 },
+                { id: 'NH', name: 'New Hampshire', value: 7950 },
+                { id: 'NJ', name: 'New Jersey', value: 32470 },
+                { id: 'NM', name: 'New Mexico', value: 9840 },
+                { id: 'NY', name: 'New York', value: 63580 },
+                { id: 'NC', name: 'North Carolina', value: 32470 },
+                { id: 'ND', name: 'North Dakota', value: 5680 },
+                { id: 'OH', name: 'Ohio', value: 38750 },
+                { id: 'OK', name: 'Oklahoma', value: 15280 },
+                { id: 'OR', name: 'Oregon', value: 18950 },
+                { id: 'PA', name: 'Pennsylvania', value: 42850 },
+                { id: 'RI', name: 'Rhode Island', value: 6540 },
+                { id: 'SC', name: 'South Carolina', value: 18950 },
+                { id: 'SD', name: 'South Dakota', value: 5280 },
+                { id: 'TN', name: 'Tennessee', value: 22480 },
+                { id: 'TX', name: 'Texas', value: 72850 },
+                { id: 'UT', name: 'Utah', value: 12940 },
+                { id: 'VT', name: 'Vermont', value: 4950 },
+                { id: 'VA', name: 'Virginia', value: 28940 },
+                { id: 'WA', name: 'Washington', value: 32470 },
+                { id: 'WV', name: 'West Virginia', value: 8750 },
+                { id: 'WI', name: 'Wisconsin', value: 21690 },
+                { id: 'WY', name: 'Wyoming', value: 4580 }
+            ];
+            
+            // For a simplified demo, we'll use rectangles to represent states
+            // In a real app, you would load a GeoJSON file and use proper state boundaries
+            const stateWidth = 8;
+            const stateHeight = 8;
+            const cols = 10;
+            
+            // Tooltip for the map
+            const tooltip = d3.select('#mapTooltip');
+            
+            // Color scale for sales values
+            const colorScale = d3.scaleSequential()
+                .domain([4000, 90000])
+                .interpolator(d3.interpolateBlues);
+                
+            // Create a simple grid layout for states
+            svg.selectAll('rect')
+                .data(stateData)
+                .enter()
+                .append('rect')
+                .attr('class', 'region')
+                .attr('x', (d, i) => (i % cols) * (stateWidth + 3) + 10)
+                .attr('y', (d, i) => Math.floor(i / cols) * (stateHeight + 3) + 10)
+                .attr('width', stateWidth)
+                .attr('height', stateHeight)
+                .attr('fill', d => colorScale(d.value))
+                .on('mouseover', function(event, d) {
+                    // Show tooltip
+                    tooltip
+                        .style('opacity', 1)
+                        .style('left', (event.pageX - document.getElementById('mapContainer').getBoundingClientRect().left + 10) + 'px')
+                        .style('top', (event.pageY - document.getElementById('mapContainer').getBoundingClientRect().top - 40) + 'px');
+                    
+                    tooltip.select('.tooltip-title').text(d.name);
+                    tooltip.select('.tooltip-value').text('$' + d.value.toLocaleString());
+                    
+                    // Highlight the state
+                    d3.select(this)
+                        .attr('stroke', '#333')
+                        .attr('stroke-width', 2);
+                })
+                .on('mouseout', function() {
+                    // Hide tooltip
+                    tooltip.style('opacity', 0);
+                    
+                    // Remove highlight
+                    d3.select(this)
+                        .attr('stroke', 'none');
+                });
+                
+            // Add state abbreviations
+            svg.selectAll('text')
+                .data(stateData)
+                .enter()
+                .append('text')
+                .attr('x', (d, i) => (i % cols) * (stateWidth + 3) + 10 + stateWidth / 2)
+                .attr('y', (d, i) => Math.floor(i / cols) * (stateHeight + 3) + 10 + stateHeight / 2)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .attr('font-size', '6px')
+                .attr('fill', d => d3.rgb(colorScale(d.value)).darker(2))
+                .text(d => d.id);
+                
+            // Add a note about the simplified map
+            svg.append('text')
+                .attr('x', width / 2)
+                .attr('y', height - 10)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '10px')
+                .attr('fill', getChartTextColor())
+                .text('US Sales Distribution (simplified view)');
+        }
+
+        // Toast notification function
+        function showToast(message, type, title) {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            let iconClass, bgClass;
+            
+            switch(type) {
+                case 'success':
+                    iconClass = 'fa-check';
+                    bgClass = 'toast-success';
+                    title = title || 'Success';
+                    break;
+                case 'error':
+                    iconClass = 'fa-exclamation-circle';
+                    bgClass = 'toast-error';
+                    title = title || 'Error';
+                    break;
+                case 'warning':
+                    iconClass = 'fa-exclamation-triangle';
+                    bgClass = 'toast-warning';
+                    title = title || 'Warning';
+                    break;
+                default:
+                    iconClass = 'fa-info-circle';
+                    bgClass = 'toast-info';
+                    title = title || 'Info';
+                    type = 'info';
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            toast.innerHTML = `
+                <div class="toast-icon ${bgClass}">
+                    <i class="fa-solid ${iconClass}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <div class="toast-progress"></div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Remove toast after animation completes
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

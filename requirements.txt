@@ -1,0 +1,12 @@
+Flask
+pymongo
+bcrypt
+jwt
+werkzeug
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+
+

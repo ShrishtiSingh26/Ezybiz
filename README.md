@@ -121,5 +121,5 @@ Contributions are welcome! To contribute:
 © 2025 EzyBiz. Empowering Small Businesses with AI.
 
 ### Our Website
-![alt text](<WhatsApp Image 2025-03-23 at 17.04.48_3c9af6e7.jpg>) ![alt text](<WhatsApp Image 2025-03-23 at 17.04.34_7a702814.jpg>) ![alt text](<WhatsApp Image 2025-03-23 at 17.04.34_d36c8b54.jpg>)
-![alt text](<WhatsApp Image 2025-03-23 at 17.22.15_9499f743.jpg>)![alt text](<WhatsApp Image 2025-03-23 at 17.23.42_5b137dd3.jpg>) ![alt text](<WhatsApp Image 2025-03-23 at 17.23.24_6aa9590b.jpg>) ![alt text](<WhatsApp Image 2025-03-23 at 17.23.00_4f46307f.jpg>) ![alt text](<WhatsApp Image 2025-03-23 at 17.22.44_2e955eb4.jpg>) ![alt text](<WhatsApp Image 2025-03-23 at 17.22.42_667d4bc3.jpg>)
+![alt text](<images\1.jpg.jpg>) ![alt text](<images\2.jpg>) ![alt text](<images\3.jpg>)
+![alt text](<images\4.jpg>)![alt text](<images\5.jpg>) ![alt text](<images\6.jpg>) ![alt text](<images\7.jpg>) ![alt text](<images\8.jpg>) ![alt text](<images\9.jpg>)

@@ -113,13 +113,15 @@ Contributions are welcome! To contribute:
 
 ---
 
-## Contact & Support
-- **Website:** [www.ezybiz.com]()
-
----
-
 © 2025 EzyBiz. Empowering Small Businesses with AI.
 
 ### Our Website
-![alt text](<images\1.jpg.jpg>) ![alt text](<images\2.jpg>) ![alt text](<images\3.jpg>)
-![alt text](<images\4.jpg>)![alt text](<images\5.jpg>) ![alt text](<images\6.jpg>) ![alt text](<images\7.jpg>) ![alt text](<images\8.jpg>) ![alt text](<images\9.jpg>)
+<img width="1280" height="597" alt="image" src="https://github.com/user-attachments/assets/c152dcaf-adab-44a5-89bc-11f1d367aeec" /><img width="1280" height="641" alt="image" src="https://github.com/user-attachments/assets/f54de1a7-e260-4e16-87a0-f0362796f99e" /><img width="1280" height="617" alt="image" src="https://github.com/user-attachments/assets/e20c4c7a-1f04-451d-8a48-417aecbd8fdc" /><img width="1280" height="572" alt="image" src="https://github.com/user-attachments/assets/3aff835e-f3b2-4269-9b12-1d3c8e954d0d" /><img width="1280" height="569" alt="image" src="https://github.com/user-attachments/assets/5a92567c-348a-4294-99d2-f13bebb0ace8" /><img width="1280" height="562" alt="image" src="https://github.com/user-attachments/assets/26942173-65fb-4add-b161-8ec27b272876" /><img width="1280" height="559" alt="image" src="https://github.com/user-attachments/assets/2df45ef3-1946-4d08-a876-61ef33b3939b" /><img width="1280" height="560" alt="image" src="https://github.com/user-attachments/assets/8aae1d1f-41df-4270-859e-762db42a99a1" /><img width="1280" height="581" alt="image" src="https://github.com/user-attachments/assets/211ccbee-d379-46f4-94f9-204b10be73be" />
+
+
+
+
+
+
+
+

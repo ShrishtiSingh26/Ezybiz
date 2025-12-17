@@ -68,7 +68,7 @@ Ensure you have the following installed:
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/EzyBiz.git  
+git clone https://github.com/ShrishtiSingh26/EzyBiz.git  
 cd EzyBiz  
 ```
 
